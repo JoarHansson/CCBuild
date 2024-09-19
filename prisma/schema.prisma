@@ -59,6 +59,10 @@ model Product {
 
   id Int @id @default(autoincrement())
 
+  category          String
+  firstSubCategory  String
+  secondSubCategory String
+
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?
 }
