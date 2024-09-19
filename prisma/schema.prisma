@@ -58,6 +58,9 @@ model Product {
   // Wait for frontend form design (some fields from before might be deleted)
 
   id Int @id @default(autoincrement())
+  category          String
+  firstSubCategory  String
+  secondSubCategory String
 
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?

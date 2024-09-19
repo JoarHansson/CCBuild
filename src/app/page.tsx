@@ -4,8 +4,11 @@ import {
   getCategories,
   getFirstSubCat,
   getSecondSubCat,
+  postProduct,
 } from "@/utils/queries";
+import { Product } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type Categories = {
   id: number;
@@ -25,16 +28,15 @@ type SecondSubCategories = {
 };
 
 export default function Home() {
+  const { register, handleSubmit } = useForm<Product>();
   const [categories, setCategories] = useState<Categories[]>();
   const [firstSubCategories, setFirstSubCategories] =
     useState<FirstSubCategories[]>();
   const [secondSubCategories, setSecondSubCategories] =
     useState<SecondSubCategories[]>();
 
-  const [selectedCategory, setSelectedCategory] = useState("Välj");
-  const [selectedSubCategory, setSelectedSubCategory] = useState("Välj Sub");
-  const [selectedSecondSubCategory, setSelectedSecondSubCategory] =
-    useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -55,38 +57,57 @@ export default function Home() {
 
   const handleCategoryChange = (event: any) => {
     setSelectedCategory(event.target.value);
-    setSelectedSubCategory("Välj Sub");
+    setSelectedSubCategory("");
     console.log(event.target.value);
+    console.log(event.target);
   };
   const handleSubCategoryChange = (event: any) => {
     setSelectedSubCategory(event.target.value);
     console.log(event.target.value);
   };
 
+  const onSubmit: SubmitHandler<Product> = (data) => postProduct(data);
+
   return (
     <>
-      <div>
-        <select onChange={handleCategoryChange}>
-          <option value="Välj">Välj Kategori</option>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <select
+          {...register("category", { required: true })}
+          onChange={handleCategoryChange}
+        >
+          <option value="">Välj Kategori</option>
           {categories?.map((category) => {
             return (
-              <option key={category.id} value={category.id}>
+              <option
+                key={category.id}
+                value={category.name}
+                id={category.id.toString()}
+              >
                 {category.name}
               </option>
             );
           })}
         </select>
-        {selectedCategory !== "Välj" ? (
-          <select onChange={handleSubCategoryChange}>
-            <option value="Välj Sub">Välj Kategori</option>
+        {selectedCategory !== "" ? (
+          <select
+            {...register("firstSubCategory", { required: true })}
+            onChange={handleSubCategoryChange}
+          >
+            <option value="">Välj Kategori</option>
             {firstSubCategories
-              ?.filter(
-                (subCategory) =>
-                  subCategory.categoryId?.toString() === selectedCategory
-              )
+              ?.filter((subCategory) => {
+                const cat = categories?.find(
+                  (cat) => cat.name === selectedCategory
+                );
+                return subCategory.categoryId === cat?.id;
+              })
               .map((subCat) => {
                 return (
-                  <option key={subCat.id} value={subCat.id}>
+                  <option
+                    key={subCat.id}
+                    value={subCat.name}
+                    id={subCat.id.toString()}
+                  >
                     {subCat.name}
                   </option>
                 );
@@ -95,18 +116,23 @@ export default function Home() {
         ) : (
           ""
         )}
-        {selectedSubCategory !== "Välj Sub" &&
-        secondSubCategories?.find(
-          (o) => o.firstSubCategoryId?.toString() === selectedSubCategory
-        ) ? (
-          <select>
-            <option>Välj Kategori</option>
+        {selectedSubCategory !== "" &&
+        secondSubCategories?.find((o) => {
+          const matchingSubCat = firstSubCategories?.find(
+            (subCat) => subCat.name === selectedSubCategory
+          );
+
+          return o.firstSubCategoryId === matchingSubCat?.id;
+        }) ? (
+          <select {...register("secondSubCategory")}>
+            <option value="">Välj Kategori</option>
             {secondSubCategories
-              ?.filter(
-                (subCategory) =>
-                  subCategory.firstSubCategoryId?.toString() ===
-                  selectedSubCategory
-              )
+              ?.filter((subCategory) => {
+                const cat = firstSubCategories?.find(
+                  (cat) => cat.name === selectedSubCategory
+                );
+                return subCategory.firstSubCategoryId === cat?.id;
+              })
               .map((subCat) => {
                 return (
                   <option key={subCat.id} value={subCat.name}>
@@ -118,7 +144,8 @@ export default function Home() {
         ) : (
           ""
         )}
-      </div>
+        <input type="submit" />
+      </form>
     </>
   );
 }

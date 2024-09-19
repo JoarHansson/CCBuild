@@ -15,3 +15,21 @@ export const getSecondSubCat = async () => {
   const secondSubCategories = await prisma.secondSubCategory.findMany();
   return secondSubCategories;
 };
+
+type Product = {
+  category: string;
+  firstSubCategory: string;
+  secondSubCategory: string;
+};
+
+export const postProduct = async (formData: Product) => {
+  console.log(formData);
+
+  await prisma.product.create({
+    data: {
+      category: formData.category as string,
+      firstSubCategory: formData.firstSubCategory as string,
+      secondSubCategory: formData.secondSubCategory as string,
+    },
+  });
+};
