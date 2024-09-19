@@ -1,31 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
 import {
   getCategories,
   getFirstSubCat,
   getSecondSubCat,
   postProduct,
 } from "@/utils/queries";
-import { Product } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
 
-type Categories = {
-  id: number;
-  name: string;
-};
-
-type FirstSubCategories = {
-  id: number;
-  name: string;
-  categoryId: number | null;
-};
-
-type SecondSubCategories = {
-  id: number;
-  name: string;
-  firstSubCategoryId: number | null;
-};
+import {
+  Product,
+  Categories,
+  FirstSubCategories,
+  SecondSubCategories,
+} from "@/utils/types";
 
 export default function Home() {
   const { register, handleSubmit } = useForm<Product>();
