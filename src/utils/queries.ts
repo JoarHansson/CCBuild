@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/utils/prisma";
+import { Product } from "./types";
 
 export const getCategories = async () => {
   const categories = await prisma.category.findMany();
@@ -14,12 +15,6 @@ export const getFirstSubCat = async () => {
 export const getSecondSubCat = async () => {
   const secondSubCategories = await prisma.secondSubCategory.findMany();
   return secondSubCategories;
-};
-
-type Product = {
-  category: string;
-  firstSubCategory: string;
-  secondSubCategory: string;
 };
 
 export const postProduct = async (formData: Product) => {
