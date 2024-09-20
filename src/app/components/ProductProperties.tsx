@@ -9,5 +9,7 @@ export default function ProductProperties({
 }: {
   register: UseFormRegister<Product>;
 }) {
+  console.log(register);
+
   return <></>;
 }

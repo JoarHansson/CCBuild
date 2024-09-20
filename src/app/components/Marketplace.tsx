@@ -9,5 +9,7 @@ export default function Marketplace({
 }: {
   register: UseFormRegister<Product>;
 }) {
+  console.log(register);
+
   return <></>;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm, UseFormRegister, SubmitHandler } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 
 import {
   getCategories,

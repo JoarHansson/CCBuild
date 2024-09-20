@@ -9,5 +9,6 @@ export default function LocationStatusAmount({
 }: {
   register: UseFormRegister<Product>;
 }) {
+  console.log(register);
   return <></>;
 }
