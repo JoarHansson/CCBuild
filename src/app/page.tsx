@@ -61,6 +61,7 @@ export default function Home() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <input {...register("name")} />
         <select
           {...register("category", { required: true })}
           onChange={handleCategoryChange}

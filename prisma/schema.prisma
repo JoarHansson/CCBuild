@@ -24,13 +24,13 @@ model User {
 model Project {
   id                  Int       @id @default(autoincrement())
   title               String
-  country             String
-  region              String
-  currency            String
+  country             String?
+  region              String?
+  currency            String?
   image_url           String?
   description         String?
-  project_number      String
-  organization        String
+  project_number      String?
+  organization        String?
   location_index_1    String?
   location_index_2    String?
   location_index_3    String?
@@ -39,11 +39,11 @@ model Project {
   decision_index_2    String?
   decision_index_3    String?
   decision_index_4    String?
-  start_date          DateTime
+  start_date          DateTime?
   end_date            DateTime?
-  first_access_date   DateTime
+  first_access_date   DateTime?
   last_access_date    DateTime?
-  first_delivery_date DateTime
+  first_delivery_date DateTime?
   last_delivery_date  DateTime?
 
   User   User? @relation(fields: [userId], references: [id])
@@ -53,17 +53,94 @@ model Project {
 }
 
 model Product {
-  // Todo:
-  // Before filling this in,
-  // Wait for frontend form design (some fields from before might be deleted)
-
-  id Int @id @default(autoincrement())
-  category          String
-  firstSubCategory  String
-  secondSubCategory String
+  // Generell information:
+  id                  Int              @id @default(autoincrement())
+  category            String
+  firstSubCategory    String
+  secondSubCategory   String?
+  name                String
+  manufacturer        String?
+  productNumber       String?
+  yearOfMake          Int?
+  yearOfPurchase      Int?
+  aestheticCondition  Int?
+  functionalCondition Int?
+  imageUrls           String[]
+  internalId          String?
+  description         String?
+  // Plats/Status/Antal
+  ProductVariant      ProductVariant[]
+  // Egenskaper:
+  hinge               String?
+  noiseReduction      Int?
+  securityGrade       String?
+  fireGrade           String?
+  glassModel          String?
+  glassType           String?
+  glassThickness      Int?
+  moduleMeasurements  String?
+  climate             String?
+  color               String?
+  frameThickness      Int?
+  // Form:
+  material            String?
+  finish              String?
+  unitOfMeasurement   String?
+  width               Int?
+  length              Int?
+  height              Int?
+  depth               Int?
+  diameter            Int?
+  thickness           Int?
+  unitOfWeight        String?
+  weight              Int?
+  // Produktinformation:
+  GTIN                String?
+  eNR                 String?
+  RSK                 String?
+  Bk04                String?
+  BSAB                String?
+  fileUrls            String[]
+  // Hantering för marknadsplats:
+  originalPrice       Int?
+  externalPrice       Int?
+  internalPrice       Int?
+  buyerCanSetPrice    Boolean?
+  canBePickedUp       Boolean?
+  adress              String?
+  postalCode          String?
+  city                String?
+  canBeSentByFreight  Boolean?
+  comment             String?
+  contactPerson       String?
 
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?
+}
+
+model ProductVariant {
+  id                    Int       @id @default(autoincrement())
+  amount                Int?
+  status                String?
+  marketPlace           String?
+  dateAvailable         DateTime?
+  earliestDeliveryDate  DateTime?
+  demountability        String?
+  demountabilityComment String?
+  accessability         String?
+  accessabilityComment  String?
+  location1             String?
+  location2             String?
+  location3             String?
+  location4             String?
+  decisionDesignation1  String?
+  decisionDesignation2  String?
+  decisionDesignation3  String?
+  decisionDesignation4  String?
+  qrCodeUrl             String?
+
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
 }
 
 model Category {
