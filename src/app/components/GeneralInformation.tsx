@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 import {
@@ -47,92 +47,119 @@ export default function GeneralInformation({
     fetchCategories();
   }, []);
   const handleCategoryChange = (event: any) => {
+    event.target.value === "" ? setIsGray(true) : setIsGray(false);
     setSelectedCategory(event.target.value);
     setSelectedSubCategory("");
     console.log(event.target.value);
     console.log(event.target);
   };
   const handleSubCategoryChange = (event: any) => {
+    event.target.value === "" ? setIsGray(true) : setIsGray(false);
     setSelectedSubCategory(event.target.value);
     console.log(event.target.value);
   };
+
+  const [isGray, setIsGray] = useState(true);
+  /* Add more states for subCategories */
+
   return (
     <>
-      <input {...register("name")} />
-      <select
-        {...register("category", { required: true })}
-        onChange={handleCategoryChange}
-      >
-        <option value="">Välj Kategori</option>
-        {categories?.map((category) => {
-          return (
-            <option
-              key={category.id}
-              value={category.name}
-              id={category.id.toString()}
-            >
-              {category.name}
-            </option>
-          );
-        })}
-      </select>
-      {selectedCategory !== "" ? (
-        <select
-          {...register("firstSubCategory", { required: true })}
-          onChange={handleSubCategoryChange}
-        >
-          <option value="">Välj Kategori</option>
-          {firstSubCategories
-            ?.filter((subCategory) => {
-              const cat = categories?.find(
-                (cat) => cat.name === selectedCategory
-              );
-              return subCategory.categoryId === cat?.id;
-            })
-            .map((subCat) => {
+      <div className="flex flex-col">
+        <input
+          {...register("name")} /* Foreign ID */
+          className="inputField"
+          placeholder="Projekt"
+        />
+        <div>
+          <select
+            {...register("category", { required: true })}
+            className="inputField "
+            style={isGray ? { color: "#767676" } : { color: "#151515" }}
+            onChange={handleCategoryChange}
+          >
+            <option value="">Välj Kategori</option>
+            {categories?.map((category) => {
               return (
                 <option
-                  key={subCat.id}
-                  value={subCat.name}
-                  id={subCat.id.toString()}
+                  key={category.id}
+                  value={category.name}
+                  id={category.id.toString()}
                 >
-                  {subCat.name}
+                  {category.name}
                 </option>
               );
             })}
-        </select>
-      ) : (
-        ""
-      )}
-      {selectedSubCategory !== "" &&
-      secondSubCategories?.find((o) => {
-        const matchingSubCat = firstSubCategories?.find(
-          (subCat) => subCat.name === selectedSubCategory
-        );
+          </select>
+          {selectedCategory !== "" ? (
+            <select
+              {...register("firstSubCategory", { required: true })}
+              className="inputField"
+              style={isGray ? { color: "#767676" } : { color: "#151515" }}
+              onChange={handleSubCategoryChange}
+            >
+              <option value="">Välj Kategori</option>
+              {firstSubCategories
+                ?.filter((subCategory) => {
+                  const cat = categories?.find(
+                    (cat) => cat.name === selectedCategory
+                  );
+                  return subCategory.categoryId === cat?.id;
+                })
+                .map((subCat) => {
+                  return (
+                    <option
+                      key={subCat.id}
+                      value={subCat.name}
+                      id={subCat.id.toString()}
+                    >
+                      {subCat.name}
+                    </option>
+                  );
+                })}
+            </select>
+          ) : (
+            ""
+          )}
+          {selectedSubCategory !== "" &&
+          secondSubCategories?.find((o) => {
+            const matchingSubCat = firstSubCategories?.find(
+              (subCat) => subCat.name === selectedSubCategory
+            );
 
-        return o.firstSubCategoryId === matchingSubCat?.id;
-      }) ? (
-        <select {...register("secondSubCategory")}>
-          <option value="">Välj Kategori</option>
-          {secondSubCategories
-            ?.filter((subCategory) => {
-              const cat = firstSubCategories?.find(
-                (cat) => cat.name === selectedSubCategory
-              );
-              return subCategory.firstSubCategoryId === cat?.id;
-            })
-            .map((subCat) => {
-              return (
-                <option key={subCat.id} value={subCat.name}>
-                  {subCat.name}
-                </option>
-              );
-            })}
-        </select>
-      ) : (
-        ""
-      )}
-      <input type="submit" />
+            return o.firstSubCategoryId === matchingSubCat?.id;
+          }) ? (
+            <select
+              {...register("secondSubCategory")}
+              className="inputField"
+              style={isGray ? { color: "#767676" } : { color: "#151515" }}
+            >
+              <option value="">Välj Kategori</option>
+              {secondSubCategories
+                ?.filter((subCategory) => {
+                  const cat = firstSubCategories?.find(
+                    (cat) => cat.name === selectedSubCategory
+                  );
+                  return subCategory.firstSubCategoryId === cat?.id;
+                })
+                .map((subCat) => {
+                  return (
+                    <option key={subCat.id} value={subCat.name}>
+                      {subCat.name}
+                    </option>
+                  );
+                })}
+            </select>
+          ) : (
+            ""
+          )}
+        </div>
+        <input
+          {...register("name")}
+          className="inputField"
+          placeholder="Produktnamn"
+        />
+        <input type="submit" />
+      </div>
     </>
   );
 }

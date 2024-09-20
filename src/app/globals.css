@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.header1 {
+  font-size: 24px;
+  font-weight: medium;
+}
+
+.header1-bold {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header2 {
+  font-size: 16px;
+  font-weight: medium;
+}
+
+.paragraph {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.paragraph-bold {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.paragraph-skinny {
+  font-size: 10px;
+  font-weight: normal;
+}
+
+.text-button {
+  font-size: 12px;
+  font-weight: medium;
+}
+
+.inputField {
+  height: 37px;
+  padding: 8px;
+  border-radius: 0.125rem;
+  border: 1px solid;
+
+  @apply bg-inputBg border-lightGray focus:outline-none placeholder:text-darkGray text-textBlack paragraph;
+}

@@ -17,12 +17,18 @@ export default function AddProduct() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <GeneralInformation register={register} />
-        <LocationStatusAmount register={register} />
-        <ProductProperties register={register} />
-        <Marketplace register={register} />
-      </form>
+      <div className="max-w-4xl px-[9rem] pt-[4rem]">
+        {/* BreadCrumbs */}
+        {/* Navigation */}
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <GeneralInformation register={register} />
+            <LocationStatusAmount register={register} />
+            <ProductProperties register={register} />
+            <Marketplace register={register} />
+          </form>
+        </div>
+      </div>
     </>
   );
 }
