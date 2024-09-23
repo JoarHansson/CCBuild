@@ -24,7 +24,7 @@ export default function AddProduct() {
 
   return (
     <>
-      <div className="max-w-4xl px-[9rem] pt-[4rem]">
+      <div className="px-[9rem] pt-[4rem]">
         {/* BreadCrumbs */}
         {/* Navigation */}
         <div>
