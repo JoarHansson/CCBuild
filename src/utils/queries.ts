@@ -17,6 +17,11 @@ export const getSecondSubCat = async () => {
   return secondSubCategories;
 };
 
+export const getProjects = async () => {
+  const projects = await prisma.project.findMany();
+  return projects;
+};
+
 export const postProduct = async (formData: Product) => {
   console.log(formData);
 
