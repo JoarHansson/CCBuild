@@ -1,3 +1,5 @@
+import { UseFormRegister } from "react-hook-form";
+
 export type Categories = {
   id: number;
   name: string;
@@ -13,6 +15,11 @@ export type SecondSubCategories = {
   id: number;
   name: string;
   firstSubCategoryId: number | null;
+};
+
+export type Project = {
+  id: number;
+  title: string;
 };
 
 export type Product = {
@@ -92,4 +99,16 @@ export type ProductVariant = {
   decisionDesignation3: string | null;
   decisionDesignation4: string | null;
   qrCodeUrl: string | null;
+};
+
+// form page types:
+export type ViewState =
+  | "GeneralInformation"
+  | "LocationStatusAmount"
+  | "ProductProperties"
+  | "Marketplace";
+
+export type FormPageProps = {
+  register: UseFormRegister<Product>;
+  setViewState: (value: ViewState) => void;
 };

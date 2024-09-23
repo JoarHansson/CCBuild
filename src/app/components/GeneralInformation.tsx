@@ -1,31 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { UseFormRegister } from "react-hook-form";
 
 import {
   getCategories,
   getFirstSubCat,
+  getProjects,
   getSecondSubCat,
 } from "@/utils/queries";
 
 import {
-  Product,
   Categories,
   FirstSubCategories,
   SecondSubCategories,
+  FormPageProps,
+  Project,
 } from "@/utils/types";
+import Link from "next/link";
 
 export default function GeneralInformation({
   register,
-}: {
-  register: UseFormRegister<Product>;
-}) {
+  setViewState,
+}: FormPageProps) {
   const [categories, setCategories] = useState<Categories[]>();
   const [firstSubCategories, setFirstSubCategories] =
     useState<FirstSubCategories[]>();
   const [secondSubCategories, setSecondSubCategories] =
     useState<SecondSubCategories[]>();
+  const [projects, setProjects] = useState<Project[]>();
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
@@ -36,9 +38,11 @@ export default function GeneralInformation({
         const categoryData = await getCategories();
         const firstSubCategoryData = await getFirstSubCat();
         const secondSubCategoryData = await getSecondSubCat();
+        const projectsData = await getProjects();
         setCategories(categoryData);
         setFirstSubCategories(firstSubCategoryData);
         setSecondSubCategories(secondSubCategoryData);
+        setProjects(projectsData);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -46,6 +50,7 @@ export default function GeneralInformation({
 
     fetchCategories();
   }, []);
+
   const handleCategoryChange = (event: any) => {
     event.target.value === "" ? setIsGray(true) : setIsGray(false);
     setSelectedCategory(event.target.value);
@@ -62,14 +67,22 @@ export default function GeneralInformation({
   const [isGray, setIsGray] = useState(true);
   /* Add more states for subCategories */
 
+  console.log(projects);
+
   return (
     <>
       <div className="flex flex-col">
-        <input
-          {...register("name")} /* Foreign ID */
-          className="inputField"
-          placeholder="Projekt"
-        />
+        {/* change when dashboard has "global state" and fetch of project:   */}
+        <select {...(register("projectId"), { valueAsNumber: true })} disabled>
+          {projects?.map((project) => {
+            return (
+              <option key={project.id} value={project.id}>
+                {project.title}
+              </option>
+            );
+          })}
+        </select>
+
         <div>
           <select
             {...register("category", { required: true })}
@@ -158,7 +171,22 @@ export default function GeneralInformation({
           className="inputField"
           placeholder="Produktnamn"
         />
-        <input type="submit" />
+        <div className="flex justify-between w-full">
+          <div className="flex gap-6">
+            <Link href={"/"} className="button-outline">
+              Föregående
+            </Link>
+            <button
+              onClick={() => setViewState("LocationStatusAmount")}
+              className="button-fill"
+            >
+              Nästa
+            </button>
+          </div>
+          <button type="submit" className="button-outline">
+            Spara
+          </button>
+        </div>
       </div>
     </>
   );

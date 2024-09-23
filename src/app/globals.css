@@ -45,3 +45,16 @@
 
   @apply bg-inputBg border-lightGray focus:outline-none placeholder:text-darkGray text-textBlack paragraph;
 }
+
+.button-outline {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6.25rem;
+  @apply border border-lightBlue bg-textWhite text-lightBlue;
+}
+
+.button-fill {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6.25rem;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  @apply border border-lightBlue bg-lightBlue text-textWhite;
+}
