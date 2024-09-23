@@ -8,13 +8,14 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
 
   return (
     <>
-      <h1>Hantering för marknadsplats</h1>
-      <p>Alla priser ska anges exklusive moms*</p>
+      <h1 className="header1-bold">Hantering för marknadsplats</h1>
+      <p className="text-red">Alla priser ska anges exklusive moms*</p>
       <LabelWrapper labelText="Nypris / st">
         <input
           {...(register("originalPrice"), { valueAsNumber: true })}
           type="number"
           className="inputField"
+          placeholder="Nypris / st"
         />
       </LabelWrapper>
       <div className="flex flex-row items-center">
@@ -23,6 +24,7 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
             {...(register("externalPrice"), { valueAsNumber: true })}
             type="number"
             className="inputField"
+            placeholder="Externt pris / st"
           />
         </LabelWrapper>
 
@@ -31,6 +33,7 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
             {...(register("internalPrice"), { valueAsNumber: true })}
             type="number"
             className="inputField"
+            placeholder="Internt pris / st"
           />
         </LabelWrapper>
         <div className="inline-flex items-center">
@@ -38,26 +41,38 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
             {...(register("buyerCanSetPrice"), { valueAsBool: true })}
             type="checkbox"
           />
-          <label>Låt köparen föreslå pris</label>
+          <label className="font-bold">Låt köparen föreslå pris</label>
         </div>
       </div>
-      <h1>(Frakt Information)</h1>
+      <h1 className="header1-bold">(Frakt Information)</h1>
       <div className="inline-flex items-center">
         <input
           {...(register("canBePickedUp"), { valueAsBool: true })}
           type="checkbox"
         />
-        <label>Kan hämtas på plats</label>
+        <label className="font-bold">Kan hämtas på plats</label>
       </div>
       <div className="flex flex-row">
         <LabelWrapper labelText="Address">
-          <input {...register("adress")} className="inputField" />
+          <input
+            {...register("adress")}
+            className="inputField"
+            placeholder="Upphämtningsadress"
+          />
         </LabelWrapper>
         <LabelWrapper labelText="Postkod">
-          <input {...register("postalCode")} className="inputField" />
+          <input
+            {...register("postalCode")}
+            className="inputField"
+            placeholder="Postkod för upphämtning"
+          />
         </LabelWrapper>
         <LabelWrapper labelText="Postort">
-          <input {...register("city")} className="inputField" />
+          <input
+            {...register("city")}
+            className="inputField"
+            placeholder="Ort för upphämtning"
+          />
         </LabelWrapper>
       </div>
       <div className="inline-flex items-center">
@@ -65,13 +80,22 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
           {...(register("canBeSentByFreight"), { valueAsBool: true })}
           type="checkbox"
         />
-        <label>Kan skickas med frakt</label>
+        <label className="font-bold">Kan skickas med frakt</label>
       </div>
       <LabelWrapper labelText="Kommentar">
-        <input {...register("comment")} className="inputField" />
+        <input
+          {...register("comment")}
+          className="inputField"
+          placeholder="Ange kompletterande info om prissättningen och eventuella garantier, tex om kostnader tillkommer för demontering och frakt, samt 
+möjliga betalningsmetoder såsom faktura eller andra betalsätt."
+        />
       </LabelWrapper>
       <LabelWrapper labelText="Kontaktperson">
-        <input {...register("contactPerson")} className="inputField" />
+        <input
+          {...register("contactPerson")}
+          className="inputField"
+          placeholder="Marie Kalmnäs"
+        />
       </LabelWrapper>
       <div className="flex gap-6">
         <button

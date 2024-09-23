@@ -10,9 +10,8 @@ type LabelWrapperProps = {
 export const LabelWrapper = ({ labelText, children }: LabelWrapperProps) => {
   return (
     <div className="flex flex-col">
-      <label>{labelText}</label>
+      <label className="font-bold">{labelText}</label>
       {children}
     </div>
   );
 };
-
