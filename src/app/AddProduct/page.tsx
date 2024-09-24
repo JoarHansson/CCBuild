@@ -14,7 +14,7 @@ import { useState } from "react";
 import { redirectToDashboard } from "@/utils/serverActions";
 
 export default function AddProduct() {
-  const { register, handleSubmit } = useForm<Product>();
+  const { register, handleSubmit, getValues } = useForm<Product>();
   const onSubmit: SubmitHandler<Product> = async (data) => {
     await postProduct(data);
     await redirectToDashboard();
@@ -24,7 +24,7 @@ export default function AddProduct() {
 
   return (
     <>
-      <div className="px-[9rem] pt-[4rem]">
+      <div className="px-4 md:px-[9rem] py-[4rem]">
         {/* BreadCrumbs */}
         {/* Navigation */}
         <div>
@@ -33,6 +33,7 @@ export default function AddProduct() {
               <GeneralInformation
                 register={register}
                 setViewState={setViewState}
+                getValues={getValues}
               />
             )}
             {viewState === "LocationStatusAmount" && (

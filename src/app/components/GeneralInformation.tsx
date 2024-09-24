@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+import nostar from "/public/nostar.png";
 
 import {
   getCategories,
@@ -16,11 +20,11 @@ import {
   FormPageProps,
   Project,
 } from "@/utils/types";
-import Link from "next/link";
 
 export default function GeneralInformation({
   register,
   setViewState,
+  getValues,
 }: FormPageProps) {
   const [categories, setCategories] = useState<Categories[]>();
   const [firstSubCategories, setFirstSubCategories] =
@@ -30,7 +34,11 @@ export default function GeneralInformation({
   const [projects, setProjects] = useState<Project[]>();
 
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [selectedFirstSubCategory, setSelectedFirstSubCategory] = useState("");
+  const [selectedSecondSubCategory, setSelectedSecondSubCategory] =
+    useState("");
+  const [aestheticStars, setAestheticStars] = useState(0);
+  const [functionalStars, setFunctionalStars] = useState(0);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -51,23 +59,72 @@ export default function GeneralInformation({
     fetchCategories();
   }, []);
 
+  const [isGray, setIsGray] = useState({
+    category: true,
+    firstSubCategory: true,
+    secondSubCategory: true,
+  });
+
   const handleCategoryChange = (event: any) => {
-    event.target.value === "" ? setIsGray(true) : setIsGray(false);
-    setSelectedCategory(event.target.value);
-    setSelectedSubCategory("");
-    console.log(event.target.value);
-    console.log(event.target);
-  };
-  const handleSubCategoryChange = (event: any) => {
-    event.target.value === "" ? setIsGray(true) : setIsGray(false);
-    setSelectedSubCategory(event.target.value);
-    console.log(event.target.value);
+    const value = event.target.value;
+    setIsGray({
+      ...isGray,
+      category: false,
+      firstSubCategory: true,
+      secondSubCategory: true,
+    });
+    setSelectedCategory(value);
+    setSelectedFirstSubCategory("");
   };
 
-  const [isGray, setIsGray] = useState(true);
-  /* Add more states for subCategories */
+  const handleFirstSubCategoryChange = (event: any) => {
+    const value = event.target.value;
+    setIsGray({
+      ...isGray,
+      firstSubCategory: false,
+      secondSubCategory: true,
+    });
+    setSelectedFirstSubCategory(value);
+  };
 
-  console.log(projects);
+  const handleSecondSubCategoryChange = (event: any) => {
+    const value = event.target.value;
+    setIsGray({
+      ...isGray,
+      secondSubCategory: false,
+    });
+    setSelectedSecondSubCategory(value);
+  };
+
+  const handleAstheticStarsChange = (event: any) => {
+    setAestheticStars(event.target.value);
+  };
+  const handleFunctionalStarsChange = (event: any) => {
+    setFunctionalStars(event.target.value);
+  };
+
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    hiddenFileInput.current?.click();
+  };
+
+  const [redBorder, setRedBorder] = useState(false);
+  const handlePageChange = () => {
+    if (getValues) {
+      const category = getValues("category");
+      const subCategory = getValues("firstSubCategory");
+      const name = getValues("name");
+
+      if (category !== "" && subCategory !== "" && name !== "") {
+        setViewState("LocationStatusAmount");
+      } else {
+        setRedBorder(true);
+      }
+    } else {
+      console.error("getValues is undefined");
+    }
+  };
 
   return (
     <>
@@ -83,7 +140,9 @@ export default function GeneralInformation({
             <select
               {...(register("projectId"), { valueAsNumber: true })}
               disabled
-              className="inputField w-[412px]"
+              className={`inputField w-full md:w-[412px] ${
+                redBorder ? "!border-red" : ""
+              }`}
             >
               {projects?.map((project) => {
                 return (
@@ -97,15 +156,19 @@ export default function GeneralInformation({
           {/* --- Project */}
 
           {/* Categories --- */}
-          <div className="flex gap-5">
+          <div className="flex md:flex-row flex-col gap-5">
             <div className="flex flex-col gap-2">
               <label htmlFor="category" className="paragraph-bold">
                 Produktkategori #1 <span className="text-red">*</span>{" "}
               </label>
               <select
                 {...register("category", { required: true })}
-                className="inputField w-[412px]"
-                style={isGray ? { color: "#767676" } : { color: "#151515" }}
+                className={`inputField w-full md:w-[412px] ${
+                  redBorder ? "!border-red" : ""
+                }`}
+                style={
+                  isGray.category ? { color: "#767676" } : { color: "#151515" }
+                }
                 onChange={handleCategoryChange}
               >
                 <option value="">Välj Kategori</option>
@@ -129,9 +192,15 @@ export default function GeneralInformation({
                 </label>
                 <select
                   {...register("firstSubCategory", { required: true })}
-                  className="inputField w-[196px]"
-                  style={isGray ? { color: "#767676" } : { color: "#151515" }}
-                  onChange={handleSubCategoryChange}
+                  className={`inputField w-full md:w-[412px] ${
+                    redBorder ? "!border-red" : ""
+                  }`}
+                  style={
+                    isGray.firstSubCategory
+                      ? { color: "#767676" }
+                      : { color: "#151515" }
+                  }
+                  onChange={handleFirstSubCategoryChange}
                 >
                   <option value="">Välj Kategori</option>
                   {firstSubCategories
@@ -157,10 +226,10 @@ export default function GeneralInformation({
             ) : (
               ""
             )}
-            {selectedSubCategory !== "" &&
+            {selectedFirstSubCategory !== "" &&
             secondSubCategories?.find((o) => {
               const matchingSubCat = firstSubCategories?.find(
-                (subCat) => subCat.name === selectedSubCategory
+                (subCat) => subCat.name === selectedFirstSubCategory
               );
 
               return o.firstSubCategoryId === matchingSubCat?.id;
@@ -171,14 +240,19 @@ export default function GeneralInformation({
                 </label>
                 <select
                   {...register("secondSubCategory")}
-                  className="inputField w-[196px]"
-                  style={isGray ? { color: "#767676" } : { color: "#151515" }}
+                  className="inputField w-full md:w-[196px]"
+                  style={
+                    isGray.secondSubCategory
+                      ? { color: "#767676" }
+                      : { color: "#151515" }
+                  }
+                  onChange={handleSecondSubCategoryChange}
                 >
                   <option value="">Välj Kategori</option>
                   {secondSubCategories
                     ?.filter((subCategory) => {
                       const cat = firstSubCategories?.find(
-                        (cat) => cat.name === selectedSubCategory
+                        (cat) => cat.name === selectedFirstSubCategory
                       );
                       return subCategory.firstSubCategoryId === cat?.id;
                     })
@@ -204,7 +278,9 @@ export default function GeneralInformation({
             </label>
             <input
               {...register("name")}
-              className="inputField w-[412px]"
+              className={`inputField w-full md:w-[412px] ${
+                redBorder ? "!border-red" : ""
+              }`}
               placeholder="Produktnamn"
             />
           </div>
@@ -238,17 +314,17 @@ export default function GeneralInformation({
               Tillverkningsår
             </label>
             <input
-              {...register("yearOfMake")}
+              {...register("yearOfMake", { valueAsNumber: true })}
               className="inputField w-full"
               placeholder="Ange uppskattat tillverkningsår"
             />
           </div>
           <div className="flex flex-col gap-2 w-[412px]">
             <label htmlFor="yearOfPurchase" className="paragraph-bold">
-              Tillverkningsår
+              Inköpsår
             </label>
             <input
-              {...register("yearOfPurchase")}
+              {...register("yearOfPurchase", { valueAsNumber: true })}
               className="inputField w-full"
               placeholder="Uppskattat inköpsår"
             />
@@ -259,22 +335,56 @@ export default function GeneralInformation({
         {/* Product condition --- */}
         <div className="flex gap-5">
           <div className="flex flex-col gap-2 w-[412px]">
-            <label htmlFor="aestheticCondition" className="paragraph-bold">
+            <label
+              htmlFor="aestheticCondition"
+              className="paragraph-bold flex gap-2"
+            >
               Estetiskt skick
+              <Image
+                src={`/${aestheticStars}-star.png`}
+                alt="Ej bedömd"
+                width={80}
+                height={16}
+              />
             </label>
             <select
-              {...register("aestheticCondition")}
+              {...register("aestheticCondition", { valueAsNumber: true })}
               className="inputField w-full"
-            />
+              onChange={handleAstheticStarsChange}
+            >
+              <option value="0">Ej bedömd</option>
+              <option value="1">Skada går inte att åtgärda</option>
+              <option value="2">Skada svår att åtgärda</option>
+              <option value="3">Skada kan lagas av proffs</option>
+              <option value="4">Skada kan lagas av lekman</option>
+              <option value="5">Perfekt skick</option>
+            </select>
           </div>
           <div className="flex flex-col gap-2 w-[412px]">
-            <label htmlFor="functionalCondition" className="paragraph-bold">
+            <label
+              htmlFor="functionalCondition"
+              className="paragraph-bold flex gap-2"
+            >
               Funktionellt skick
+              <Image
+                src={`/${functionalStars}-star.png`}
+                alt="Ej bedömd"
+                width={80}
+                height={16}
+              />
             </label>
             <select
-              {...register("functionalCondition")}
+              {...register("functionalCondition", { valueAsNumber: true })}
               className="inputField w-full"
-            />
+              onChange={handleFunctionalStarsChange}
+            >
+              <option value="0">Ej bedömd</option>
+              <option value="1">Skada går inte att åtgärda</option>
+              <option value="2">Skada svår att åtgärda</option>
+              <option value="3">Skada kan lagas av proffs</option>
+              <option value="4">Skada kan lagas av lekman</option>
+              <option value="5">Perfekt skick</option>
+            </select>
           </div>
         </div>
         {/* --- Product condition */}
@@ -282,13 +392,21 @@ export default function GeneralInformation({
         {/* Product image --- */}
         <div className="flex gap-5">
           <div className="flex flex-col gap-2 w-[412px]">
-            <label htmlFor="imageUrls" className="paragraph-bold">
-              Produkt bilder
+            <label htmlFor="imageUrls" className="paragraph-bold ">
+              Produktbilder
             </label>
+            <div
+              className="inputField cursor-pointer !h-[92px] flex items-center justify-center gap-2"
+              onClick={handleClick}
+            >
+              <Image src="/upload.svg" width={24} height={24} alt="upload" />
+              Dra och släpp bilder här eller bläddra
+            </div>
             <input
               {...register("imageUrls")}
               type="file"
-              className="inputField w-full"
+              ref={hiddenFileInput}
+              className="hidden"
             />
           </div>
           <div className="flex flex-col gap-2 w-[412px]">
@@ -323,10 +441,8 @@ export default function GeneralInformation({
             <Link href={"/"} className="button-outline">
               Föregående
             </Link>
-            <button
-              onClick={() => setViewState("LocationStatusAmount")}
-              className="button-fill"
-            >
+
+            <button onClick={handlePageChange} className="button-fill">
               Nästa
             </button>
           </div>
