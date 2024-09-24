@@ -12,7 +12,7 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
       <p className="text-red">Alla priser ska anges exklusive moms*</p>
       <LabelWrapper labelText="Nypris / st">
         <input
-          {...(register("originalPrice"), { valueAsNumber: true })}
+          {...register("originalPrice", { valueAsNumber: true })}
           type="number"
           className="inputField"
           placeholder="Nypris / st"
@@ -21,7 +21,7 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
       <div className="flex flex-row items-center">
         <LabelWrapper labelText="Externt pris / st">
           <input
-            {...(register("externalPrice"), { valueAsNumber: true })}
+            {...register("externalPrice", { valueAsNumber: true })}
             type="number"
             className="inputField"
             placeholder="Externt pris / st"
@@ -30,26 +30,20 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
 
         <LabelWrapper labelText="Internt pris / st">
           <input
-            {...(register("internalPrice"), { valueAsNumber: true })}
+            {...register("internalPrice", { valueAsNumber: true })}
             type="number"
             className="inputField"
             placeholder="Internt pris / st"
           />
         </LabelWrapper>
         <div className="inline-flex items-center">
-          <input
-            {...(register("buyerCanSetPrice"), { valueAsBool: true })}
-            type="checkbox"
-          />
+          <input {...register("buyerCanSetPrice")} type="checkbox" />
           <label className="font-bold">Låt köparen föreslå pris</label>
         </div>
       </div>
       <h1 className="header1-bold">(Frakt Information)</h1>
       <div className="inline-flex items-center">
-        <input
-          {...(register("canBePickedUp"), { valueAsBool: true })}
-          type="checkbox"
-        />
+        <input {...register("canBePickedUp")} type="checkbox" />
         <label className="font-bold">Kan hämtas på plats</label>
       </div>
       <div className="flex flex-row">
@@ -76,10 +70,7 @@ export default function Marketplace({ register, setViewState }: FormPageProps) {
         </LabelWrapper>
       </div>
       <div className="inline-flex items-center">
-        <input
-          {...(register("canBeSentByFreight"), { valueAsBool: true })}
-          type="checkbox"
-        />
+        <input {...register("canBeSentByFreight")} type="checkbox" />
         <label className="font-bold">Kan skickas med frakt</label>
       </div>
       <LabelWrapper labelText="Kommentar">
