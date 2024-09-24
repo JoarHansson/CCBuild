@@ -1,4 +1,4 @@
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, UseFormReturn } from "react-hook-form";
 
 export type Categories = {
   id: number;
@@ -111,4 +111,5 @@ export type ViewState =
 export type FormPageProps = {
   register: UseFormRegister<Product>;
   setViewState: (value: ViewState) => void;
+  getValues?: UseFormReturn<Product>["getValues"];
 };
