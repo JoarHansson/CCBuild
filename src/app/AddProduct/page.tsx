@@ -14,7 +14,7 @@ import { useState } from "react";
 import { redirectToDashboard } from "@/utils/serverActions";
 
 export default function AddProduct() {
-  const { register, handleSubmit, getValues } = useForm<Product>();
+  const { control, register, handleSubmit, getValues } = useForm<Product>();
   const onSubmit: SubmitHandler<Product> = async (data) => {
     await postProduct(data);
     await redirectToDashboard();
@@ -40,6 +40,8 @@ export default function AddProduct() {
               <LocationStatusAmount
                 register={register}
                 setViewState={setViewState}
+                control={control}
+                getValues={getValues}
               />
             )}
             {viewState === "ProductProperties" && (

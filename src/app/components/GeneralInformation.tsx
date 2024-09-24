@@ -57,6 +57,8 @@ export default function GeneralInformation({
     fetchCategories();
   }, []);
 
+  console.log(selectedSecondSubCategory);
+
   const [isGray, setIsGray] = useState({
     category: true,
     firstSubCategory: true,
