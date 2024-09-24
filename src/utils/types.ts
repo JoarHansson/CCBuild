@@ -1,8 +1,4 @@
-import {
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormReturn,
-} from "react-hook-form";
+import { UseFormRegister, UseFormReturn } from "react-hook-form";
 
 export type Categories = {
   id: number;

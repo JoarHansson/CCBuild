@@ -4,8 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import nostar from "/public/nostar.png";
-
 import {
   getCategories,
   getFirstSubCat,
