@@ -9,8 +9,8 @@ type LabelWrapperProps = {
 
 export const LabelWrapper = ({ labelText, children }: LabelWrapperProps) => {
   return (
-    <div className="flex flex-col">
-      <label className="font-bold">{labelText}</label>
+    <div className="flex flex-col gap-2">
+      <label className="paragraph-bold">{labelText}</label>
       {children}
     </div>
   );
