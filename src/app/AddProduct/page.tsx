@@ -12,6 +12,7 @@ import ProductProperties from "../components/ProductProperties";
 import Marketplace from "../components/Marketplace";
 import { useState } from "react";
 import { redirectToDashboard } from "@/utils/serverActions";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 
 export default function AddProduct() {
   const { control, register, handleSubmit, getValues } = useForm<Product>();
@@ -25,6 +26,7 @@ export default function AddProduct() {
   return (
     <>
       <div className="px-4 md:px-[9rem] py-[4rem]">
+        <Breadcrumbs viewState={viewState} />
         {/* BreadCrumbs */}
         {/* Navigation */}
         <div>
