@@ -31,6 +31,18 @@ export const getProducts = async () => {
   return products;
 };
 
+export const getProduct = async (productId: number) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    include: {
+      ProductVariant: true,
+    },
+  });
+  return product;
+};
+
 export const postProduct = async (formData: Product) => {
   console.log(formData);
 

@@ -18,28 +18,28 @@ export const Breadcrumbs = ({ viewState }: { viewState: ViewState }) => {
         {viewState === "GeneralInformation" && (
           <div className="flex flex-row gap-[0.81rem] pb-[1.47rem]">
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-bold">Generell information</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Plats / Status / Antal</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Egenskaper / Produktinformation</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
@@ -50,28 +50,28 @@ export const Breadcrumbs = ({ viewState }: { viewState: ViewState }) => {
         {viewState === "LocationStatusAmount" && (
           <div className="flex flex-row gap-[0.81rem] pb-[1.47rem]">
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Generell information</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-bold">Plats / Status / Antal</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Egenskaper / Produktinformation</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
@@ -82,28 +82,28 @@ export const Breadcrumbs = ({ viewState }: { viewState: ViewState }) => {
         {viewState === "ProductProperties" && (
           <div className="flex flex-row gap-[0.81rem] pb-[1.47rem]">
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Generell information</h2>
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Plats / Status / Antal</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-bold">Egenskaper / Produktinformation</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
@@ -114,28 +114,28 @@ export const Breadcrumbs = ({ viewState }: { viewState: ViewState }) => {
         {viewState === "Marketplace" && (
           <div className="flex flex-row gap-[0.81rem] pb-[1.47rem]">
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Generell information</h2>
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Plats / Status / Antal</h2>
             <Image
-              src="/checkmark-green.svg"
+              src="/Checkmark-green.svg"
               alt="grey checkmark"
               width={18}
               height={18}
             />
             <h2 className="navigation-grey">Egenskaper / Produktinformation</h2>
             <Image
-              src="/checkmark-grey.svg"
+              src="/Checkmark-grey.svg"
               alt="grey checkmark"
               width={18}
               height={18}
