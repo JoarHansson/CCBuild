@@ -22,6 +22,15 @@ export const getProjects = async () => {
   return projects;
 };
 
+export const getProducts = async () => {
+  const products = await prisma.product.findMany({
+    include: {
+      ProductVariant: true,
+    },
+  });
+  return products;
+};
+
 export const postProduct = async (formData: Product) => {
   console.log(formData);
 
