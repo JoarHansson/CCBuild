@@ -6,9 +6,11 @@ import { getProducts } from "@/utils/queries";
 import { useEffect, useState } from "react";
 import { Product } from "@/utils/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,7 +32,11 @@ export default function Home() {
       <div>
         {products?.map((product) => {
           return (
-            <div key={product.id}>
+            <div
+              className="cursor-pointer"
+              key={product.id}
+              onClick={() => router.push(`/${product.id}`)}
+            >
               <p className="paragraph">
                 {`${product.category} > ${product.firstSubCategory} ${
                   product.secondSubCategory
