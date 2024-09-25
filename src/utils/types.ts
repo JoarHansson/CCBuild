@@ -23,6 +23,7 @@ export type Project = {
 };
 
 export type Product = {
+  id: number | null;
   category: string;
   firstSubCategory: string;
   secondSubCategory: string | null;
