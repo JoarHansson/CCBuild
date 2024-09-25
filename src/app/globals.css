@@ -37,6 +37,17 @@
   font-weight: medium;
 }
 
+.navigation-bold {
+  font-size: 16;
+  font-weight: 700;
+  @apply text-textBlack;
+}
+.navigation-grey {
+  font-size: 16;
+  font-weight: normal;
+  @apply text-darkGray;
+}
+
 .inputField {
   height: 37px;
   padding: 8px;
