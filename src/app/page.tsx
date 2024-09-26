@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>();
+  const [uniqueCategories, setUniqueCategories] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +18,11 @@ export default function Home() {
       try {
         const productsData = await getProducts();
         setProducts(productsData);
-        console.log(productsData);
+
+        const categories = productsData.map((product) => product.category);
+        const uniqueCategoriesArray = Array.from(new Set(categories));
+        setUniqueCategories(uniqueCategoriesArray);
+        console.log(uniqueCategories);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -31,9 +36,21 @@ export default function Home() {
       <div className="px-4 md:px-[9rem] py-[4rem]">
         <div className="flex pb-4">
           <h1 className="header1">Översikt</h1>
-          <Image src="/crumb-arrow.svg" alt="arrow" width={24} height={24} />
+          <Image
+            src="/crumb-arrow.svg"
+            alt="arrow"
+            width={24}
+            height={24}
+            style={{ height: "24px", width: "auto" }}
+          />
           <h1 className="header1">Projekt</h1>
-          <Image src="/crumb-arrow.svg" alt="arrow" width={24} height={24} />
+          <Image
+            src="/crumb-arrow.svg"
+            alt="arrow"
+            width={24}
+            height={24}
+            style={{ height: "24px", width: "auto" }}
+          />
           <h1 className="header1">Grupp 4</h1>
         </div>
         <div
@@ -153,51 +170,29 @@ export default function Home() {
             </div>
 
             <div className="col-span-3">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex flex-col mb-10 gap-4 px-6">
                 <div className="flex space-x-2">
-                  <button className="px-3 py-1 bg-gray-200 rounded">
-                    Belysning
-                  </button>
-                  <button className="px-3 py-1 bg-gray-200 rounded">
-                    Bygg
-                  </button>
-                  {/* Add more category buttons as needed */}
+                  {uniqueCategories.map((category, index) => (
+                    <div key={index}>
+                      <p className="paragraph bg-inputBg py-2 px-4 rounded-[50px]">
+                        {category}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex space-x-2">
-                  <button className="p-2 bg-gray-200 rounded">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                      />
-                    </svg>
+                <div className="flex space-x-2 bg-inputBg justify-end items-center p-4 gap-4">
+                  <button className="p-2 bg-gray-200 rounded bg-textWhite">
+                    <Image src="/list.svg" alt="grid" width={25} height={25} />
                   </button>
-                  <button className="p-2 bg-gray-200 rounded">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                      />
-                    </svg>
+                  <button className="p-2 bg-gray-200 rounded bg-textBlack">
+                    <Image src="/grid.svg" alt="grid" width={25} height={25} />
                   </button>
-                  <span>12</span>
-                  <span>Uppdaterad</span>
+                  <div className="bg-textWhite pl-3 pr-6 flex  h-10 rounded items-center justify-center">
+                    <p className="">{products?.length}</p>
+                  </div>
+                  <div className="bg-textWhite pl-3 pr-6 flex h-10 rounded items-center justify-center">
+                    <p className="">Uppdaterad</p>
+                  </div>
                 </div>
               </div>
 
@@ -213,8 +208,9 @@ export default function Home() {
                         <Image
                           src="/image-placeholder-card.png"
                           alt="image placeholder"
-                          layout="fill"
-                          objectFit="cover"
+                          fill
+                          style={{ objectFit: "cover" }}
+                          priority={false}
                         />
                       </div>
                       <p className="text-[10px] mb-1">
