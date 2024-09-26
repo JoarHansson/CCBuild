@@ -781,8 +781,9 @@ export default function EditPage() {
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Form</h1>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            {/* Material och finish */}
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="material" className="paragraph-bold">
                   Material
                 </label>
@@ -793,7 +794,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="finish" className="paragraph-bold">
                   Färg / Finish
                 </label>
@@ -804,8 +805,10 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Material och finish */}
 
-            <div className="flex w-full gap-4">
+            {/* Unit of measurement + dimensions */}
+            <div className="flex  gap-4">
               <div className="flex flex-col gap-2">
                 <label htmlFor="unitOfMeasurement" className="paragraph-bold">
                   Enhet mått
@@ -888,9 +891,11 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Unit of measurement + dimensions */}
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            {/* Unit of weight + weight */}
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="unitOfWeight" className="paragraph-bold">
                   Enhet vikt
                 </label>
@@ -901,7 +906,7 @@ export default function EditPage() {
                 </select>
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="weight" className="paragraph-bold">
                   Vikt / st
                 </label>
@@ -913,14 +918,15 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Unit of weight + weight */}
           </div>
 
           {/* Produktinformation: */}
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Produktinformation</h1>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="GTIN" className="paragraph-bold">
                   GTIN
                 </label>
@@ -931,7 +937,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="eNR" className="paragraph-bold">
                   E - NR
                 </label>
@@ -943,8 +949,8 @@ export default function EditPage() {
               </div>
             </div>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="RSK" className="paragraph-bold">
                   RSK
                 </label>
@@ -955,7 +961,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="Bk04" className="paragraph-bold">
                   Bk04
                 </label>
@@ -967,8 +973,8 @@ export default function EditPage() {
               </div>
             </div>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="BSAB" className="paragraph-bold">
                   BSAB
                 </label>
@@ -979,7 +985,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2 opacity-0">
+              <div className="flex flex-col gap-2 w-[400px] opacity-0">
                 <label className="paragraph-bold">ghost field</label>
                 <input
                   className="inputField"
@@ -989,6 +995,7 @@ export default function EditPage() {
               </div>
             </div>
           </div>
+          {/* end - Produktinformation: */}
 
           {/* files: */}
           <div className="flex gap-8 items-center pb-10">
