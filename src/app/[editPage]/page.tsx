@@ -5,13 +5,11 @@ import { useEffect, useState } from "react";
 import { Product } from "@/utils/types";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { LabelWrapper } from "../components/LabelWrapper";
 import Link from "next/link";
 
 export default function EditPage() {
-  const { control, register, handleSubmit, getValues } = useForm<Product>();
   const [product, setProduct] = useState<Product | null>();
   const pathname = parseInt(usePathname().slice(1));
   console.log(pathname);
@@ -289,10 +287,7 @@ export default function EditPage() {
               <label htmlFor="description" className="paragraph-bold">
                 Produktbeskrivning
               </label>
-              <textarea
-                {...register("description")}
-                className="inputField w-full min-h-[128px]"
-              />
+              <textarea className="inputField w-full min-h-[128px]" />
             </div>
           </div>
           {/* --- Product descripton */}
