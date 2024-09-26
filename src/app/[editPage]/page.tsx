@@ -217,19 +217,36 @@ export default function EditPage() {
               >
                 Estetiskt skick
                 <Image
-                  src={`/${product?.aestheticCondition}-star.png`}
+                  src={`/${
+                    product?.aestheticCondition !== undefined &&
+                    product?.aestheticCondition !== null
+                      ? product.aestheticCondition
+                      : 0
+                  }-star.png`}
                   alt="Ej bedömd"
                   width={80}
                   height={16}
                 />
               </label>
               <select className="inputField w-full">
-                <option value="0">Ej bedömd</option>
-                <option value="1">Skada går inte att åtgärda</option>
-                <option value="2">Skada svår att åtgärda</option>
-                <option value="3">Skada kan lagas av proffs</option>
-                <option value="4">Skada kan lagas av lekman</option>
-                <option value="5">Perfekt skick</option>
+                <option value="0" selected={product?.aestheticCondition === 0}>
+                  Ej bedömd
+                </option>
+                <option value="1" selected={product?.aestheticCondition === 1}>
+                  Skada går inte att åtgärda
+                </option>
+                <option value="2" selected={product?.aestheticCondition === 2}>
+                  Skada svår att åtgärda
+                </option>
+                <option value="3" selected={product?.aestheticCondition === 3}>
+                  Skada kan lagas av proffs
+                </option>
+                <option value="4" selected={product?.aestheticCondition === 4}>
+                  Skada kan lagas av lekman
+                </option>
+                <option value="5" selected={product?.aestheticCondition === 5}>
+                  Perfekt skick
+                </option>
               </select>
             </div>
             <div className="flex flex-col gap-2 w-[412px]">
@@ -239,19 +256,36 @@ export default function EditPage() {
               >
                 Funktionellt skick
                 <Image
-                  src={`/${product?.functionalCondition}-star.png`}
+                  src={`/${
+                    product?.functionalCondition !== undefined &&
+                    product?.functionalCondition !== null
+                      ? product.functionalCondition
+                      : 0
+                  }-star.png`}
                   alt="Ej bedömd"
                   width={80}
                   height={16}
                 />
               </label>
               <select className="inputField w-full">
-                <option value="0">Ej bedömd</option>
-                <option value="1">Skada går inte att åtgärda</option>
-                <option value="2">Skada svår att åtgärda</option>
-                <option value="3">Skada kan lagas av proffs</option>
-                <option value="4">Skada kan lagas av lekman</option>
-                <option value="5">Perfekt skick</option>
+                <option value="0" selected={product?.functionalCondition === 0}>
+                  Ej bedömd
+                </option>
+                <option value="1" selected={product?.functionalCondition === 1}>
+                  Skada går inte att åtgärda
+                </option>
+                <option value="2" selected={product?.functionalCondition === 2}>
+                  Skada svår att åtgärda
+                </option>
+                <option value="3" selected={product?.functionalCondition === 3}>
+                  Skada kan lagas av proffs
+                </option>
+                <option value="4" selected={product?.functionalCondition === 4}>
+                  Skada kan lagas av lekman
+                </option>
+                <option value="5" selected={product?.functionalCondition === 5}>
+                  Perfekt skick
+                </option>
               </select>
             </div>
           </div>
