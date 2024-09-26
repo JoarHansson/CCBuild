@@ -11,15 +11,15 @@ import Link from "next/link";
 
 export default function EditPage() {
   const [product, setProduct] = useState<Product | null>();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const pathname = parseInt(usePathname().slice(1));
-  console.log(pathname);
 
+  // set product logic:
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const productData = await getProduct(pathname);
         setProduct(productData);
-        console.log(productData);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -28,6 +28,15 @@ export default function EditPage() {
     fetchProduct();
   }, []);
 
+  // set category logic:
+  useEffect(() => {
+    if (product !== null && product !== undefined) {
+      setSelectedCategory(product.category);
+    }
+    console.log(selectedCategory);
+  }, [product]);
+
+  // dropdown visibility logic:
   const [dropdownIsVisible, setDropdownIsVisible] = useState<{
     [key: number]: boolean;
   }>({});
@@ -39,6 +48,7 @@ export default function EditPage() {
     }));
   };
 
+  // scroll-to-top logic:
   const isBrowser = () => typeof window !== "undefined";
 
   function scrollToTop() {
@@ -597,9 +607,166 @@ export default function EditPage() {
           {/* Egenskaper: */}
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Egenskaper</h1>
-            <p className="paragraph">
-              Det finns inga specifika egenskaper för vald produkttyp
-            </p>
+
+            <div className="flex gap-4">
+              {/* hinge */}
+              {selectedCategory !== "Golv" && (
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="hinge" className="paragraph-bold">
+                    Hängning
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.hinge}
+                    </option>
+                  </select>
+                </div>
+              )}
+
+              {/* noiseReduction */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="noiseReduction" className="paragraph-bold">
+                  Ljudreduktion (dB)
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.noiseReduction}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {/* securityGrade */}
+              {selectedCategory !== "Golv" && (
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="securityGrade" className="paragraph-bold">
+                    Inbrottsskydd
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.securityGrade}
+                    </option>
+                  </select>
+                </div>
+              )}
+
+              {/* fireGrade */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="fireGrade" className="paragraph-bold">
+                  Brandskydd
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.fireGrade}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            {/* glass: */}
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* glassModel */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassModel" className="paragraph-bold">
+                    Glasmodell
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassModel}
+                    </option>
+                  </select>
+                </div>
+
+                {/* glassType */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassType" className="paragraph-bold">
+                    Glastyp
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassType}
+                    </option>
+                  </select>
+                </div>
+
+                {/* glassThickness */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassThickness" className="paragraph-bold">
+                    Glastjocklek (mm)
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassThickness}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* moduleMeasurements */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label
+                    htmlFor="moduleMeasurements"
+                    className="paragraph-bold"
+                  >
+                    Modulmått
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.moduleMeasurements}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-4">
+              {/* climate */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="climate" className="paragraph-bold">
+                  Omgivning/klimat
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.climate}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {/* color */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="color" className="paragraph-bold">
+                  Färg
+                </label>
+                <input
+                  className="inputField"
+                  placeholder="Färg"
+                  value={product?.color || "Färg"}
+                />
+              </div>
+            </div>
+
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* frameThickness */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="frameThickness" className="paragraph-bold">
+                    Karmdjup (mm)
+                  </label>
+                  <input
+                    value={product?.frameThickness || "Karmdjup (mm)"}
+                    className="inputField"
+                    placeholder="Karmdjup (mm)"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Form: */}
