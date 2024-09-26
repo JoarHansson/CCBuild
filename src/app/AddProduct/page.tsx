@@ -2,15 +2,28 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { postProduct } from "@/utils/queries";
+import {
+  getCategories,
+  getFirstSubCat,
+  getProjects,
+  getSecondSubCat,
+  postProduct,
+} from "@/utils/queries";
 
-import { Product, ViewState } from "@/utils/types";
+import {
+  Categories,
+  FirstSubCategories,
+  Product,
+  Project,
+  SecondSubCategories,
+  ViewState,
+} from "@/utils/types";
 
 import GeneralInformation from "../components/GeneralInformation";
 import LocationStatusAmount from "../components/LocationStatusAmount";
 import ProductProperties from "../components/ProductProperties";
 import Marketplace from "../components/Marketplace";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { redirectToDashboard } from "@/utils/serverActions";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 
@@ -22,6 +35,32 @@ export default function AddProduct() {
   };
 
   const [viewState, setViewState] = useState<ViewState>("GeneralInformation");
+
+  const [categories, setCategories] = useState<Categories[]>();
+  const [firstSubCategories, setFirstSubCategories] =
+    useState<FirstSubCategories[]>();
+  const [secondSubCategories, setSecondSubCategories] =
+    useState<SecondSubCategories[]>();
+  const [projects, setProjects] = useState<Project[]>();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoryData = await getCategories();
+        const firstSubCategoryData = await getFirstSubCat();
+        const secondSubCategoryData = await getSecondSubCat();
+        const projectsData = await getProjects();
+        setCategories(categoryData);
+        setFirstSubCategories(firstSubCategoryData);
+        setSecondSubCategories(secondSubCategoryData);
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <>
@@ -36,6 +75,10 @@ export default function AddProduct() {
                 register={register}
                 setViewState={setViewState}
                 getValues={getValues}
+                categories={categories}
+                firstSubCategories={firstSubCategories}
+                secondSubCategories={secondSubCategories}
+                projects={projects}
               />
             )}
             {viewState === "LocationStatusAmount" && (

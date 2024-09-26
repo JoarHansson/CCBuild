@@ -114,4 +114,8 @@ export type FormPageProps = {
   setViewState: (value: ViewState) => void;
   getValues?: UseFormReturn<Product>["getValues"];
   control?: Control<Product, any>;
+  categories?: Categories[] | undefined;
+  firstSubCategories?: FirstSubCategories[] | undefined;
+  secondSubCategories?: SecondSubCategories[] | undefined;
+  projects?: Project[] | undefined;
 };
