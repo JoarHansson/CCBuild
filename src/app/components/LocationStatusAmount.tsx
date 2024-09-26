@@ -19,7 +19,7 @@ export default function LocationStatusAmount({
   });
 
   const defaultVariant = {
-    id: null, // Add the id field and set it to null
+    id: null,
     amount: null,
     status: "",
     marketPlace: "",
@@ -45,10 +45,12 @@ export default function LocationStatusAmount({
   }, []);
 
   const getTodaysDate = () => {
-    const today = new Date().toISOString().split("T")[0]; // Format the date as YYYY-MM-DD
+    // Format the date as YYYY-MM-DD
+    const today = new Date().toISOString().split("T")[0];
     return today;
   };
 
+  // Toggle dropdown logic:
   const [dropdownIsVisible, setDropdownIsVisible] = useState<{
     [key: number]: boolean;
   }>({});
@@ -59,9 +61,30 @@ export default function LocationStatusAmount({
       [index]: !prevState[index],
     }));
   };
+
+  // Remove variants logic:
+  const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
+
+  const handleClickRemoveVariant = () => {
+    if (selectedVariants.length === 0) {
+      return;
+    } else {
+      remove(selectedVariants);
+      setSelectedVariants([]);
+    }
+  };
+
+  const handleToggleCheckbox = (event: any, index: number) => {
+    if (event.target.checked) {
+      setSelectedVariants((prevState) => [...prevState, index]);
+    } else {
+      setSelectedVariants((prevState) => prevState.filter((i) => i !== index));
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between mb-8">
         <h1 className="header1-bold">Plats / Status / Antal</h1>
         <div className="flex gap-4">
           <button
@@ -74,6 +97,7 @@ export default function LocationStatusAmount({
 
           <div className="flex gap-2">
             <button
+              onClick={handleClickRemoveVariant}
               type="button"
               className="button-outline !bg-lightGray !text-darkGray !border-lightGray"
             >
@@ -101,225 +125,239 @@ export default function LocationStatusAmount({
         </div>
       </div>
 
-      {fields.map((item, index) => (
-        <div key={item.id}>
-          <table>
-            <tbody>
-              <tr>
-                <th>
-                  <input type="checkbox" />
-                </th>
-                <th className="paragraph-bold text-left">Ändra</th>
-                <th className="paragraph-bold text-left">Antal (st)</th>
-                <th className="paragraph-bold col-span-2 text-left">Status</th>
-                <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
-                <th className="paragraph-bold text-left">Placering #1</th>
-                <th className="paragraph-bold text-left">Placering #2</th>
-                <th className="paragraph-bold text-left">Placering #3</th>
-                <th className="paragraph-bold text-left">Placering #4</th>
-                <th className="paragraph-bold text-left">QR-kod</th>
-              </tr>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th className="paragraph-bold text-left">Ändra</th>
+            <th className="paragraph-bold text-left">Antal (st)</th>
+            <th className="paragraph-bold col-span-2 text-left">Status</th>
+            <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
+            <th className="paragraph-bold text-left">Placering #1</th>
+            <th className="paragraph-bold text-left">Placering #2</th>
+            <th className="paragraph-bold text-left">Placering #3</th>
+            <th className="paragraph-bold text-left">Placering #4</th>
+            <th className="paragraph-bold text-left">QR-kod</th>
+          </tr>
+        </thead>
 
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td
-                  onClick={() => toggleDropdown(index)}
-                  className="cursor-pointer"
-                >
-                  <Image
-                    src="/Button-Edit.svg"
-                    alt="edit icon"
-                    height={36}
-                    width={36}
-                  />
-                </td>
-                <td>
-                  {/* antal */}
-                  <input
-                    type="text"
-                    placeholder="1"
-                    className="inputField"
-                    value={getValues?.(`ProductVariant.${index}.amount`) || ""}
-                    defaultValue={1}
-                  />
-                </td>
-                <td>
-                  <select className="inputField">
-                    <option value="">Inventerad</option>
-                  </select>
-                </td>
-                <td>
-                  <select className="inputField">
-                    <option value="">Ej publicerad</option>
-                  </select>
-                </td>
-                <td className="paragraph text-left"></td>
-                <td className="paragraph text-left"></td>
-                <td className="paragraph text-left"></td>
-                <td className="paragraph text-left"></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-
-          {/* dropdown part: */}
-          <div
-            className={` flex-col gap-4 mb-4 ${
-              dropdownIsVisible[index] ? "flex" : "hidden"
-            }`}
-          >
-            <h1 className="header1-bold">
-              Editera antal, status och platsinformation
-            </h1>
-
-            <LabelWrapper labelText="Antal (st)">
-              <input
-                {...register(`ProductVariant.${index}.amount`, {
-                  valueAsNumber: true,
-                })}
-                className="inputField"
-              />
-            </LabelWrapper>
-
-            <div className="grid grid-cols-2 gap-6">
-              <LabelWrapper labelText="Status">
-                <select
-                  {...register(`ProductVariant.${index}.status`)}
-                  className="inputField"
-                >
-                  <option value="Inventerad">
-                    Inventerad - i lager/förråd
-                  </option>
-                </select>
-              </LabelWrapper>
-              <LabelWrapper labelText="Marknadsplatsen">
-                <select
-                  {...register(`ProductVariant.${index}.marketPlace`)}
-                  className="inputField"
-                >
-                  <option value="Ej publicerad">Ej publicerad</option>
-                </select>
-              </LabelWrapper>
-              <LabelWrapper labelText="Datum tillgänglig">
+        {fields.map((item, index) => (
+          <tbody key={item.id}>
+            <tr>
+              <td>
                 <input
-                  {...register(`ProductVariant.${index}.dateAvailable`, {
-                    valueAsDate: true,
-                  })}
-                  className="inputField"
-                  type="date"
-                  defaultValue={getTodaysDate()}
+                  type="checkbox"
+                  onChange={(event) => handleToggleCheckbox(event, index)}
                 />
-              </LabelWrapper>
-              <LabelWrapper labelText="Datum första möjliga leverans">
-                <input
-                  {...register(`ProductVariant.${index}.earliestDeliveryDate`, {
-                    valueAsDate: true,
-                  })}
-                  className="inputField"
-                  type="date"
-                  defaultValue={getTodaysDate()}
-                />
-              </LabelWrapper>
-              <LabelWrapper labelText="Demonterbarhet">
-                <select
-                  {...register(`ProductVariant.${index}.demountability`)}
-                  className="inputField"
-                >
-                  <option value="Enkel att demontera">
-                    Enkel att demontera/demontering krävs ej
-                  </option>
-                </select>
-              </LabelWrapper>
-              <LabelWrapper labelText="Åtkomlighet">
-                <select
-                  {...register(`ProductVariant.${index}.accessability`)}
-                  className="inputField"
-                >
-                  <option value="Lätt åtkomligt">Lätt åtkomligt</option>
-                </select>
-              </LabelWrapper>
-              <LabelWrapper labelText="Demonterbarhet kommentar">
-                <input
-                  {...register(`ProductVariant.${index}.demountabilityComment`)}
-                  className="inputField"
-                  placeholder="Demonterbarhet kommentar"
-                />
-              </LabelWrapper>
-              <LabelWrapper labelText="Åtkomlighet kommentar">
-                <input
-                  {...register(`ProductVariant.${index}.accessabilityComment`)}
-                  className="inputField"
-                  placeholder="Åtkomlighet kommentar"
-                />
-              </LabelWrapper>
-            </div>
-
-            <div className="flex gap-5">
-              <LabelWrapper labelText="Placering #1">
-                <input
-                  {...register(`ProductVariant.${index}.location1`)}
-                  className="inputField"
-                  placeholder="Placering #1"
-                />
-              </LabelWrapper>
-              <LabelWrapper labelText="Placering #2">
+              </td>
+              <td
+                onClick={() => toggleDropdown(index)}
+                className="cursor-pointer"
+              >
                 <Image
-                  src="/Button-Add.svg"
+                  src="/Button-Edit.svg"
+                  alt="edit icon"
                   height={36}
                   width={36}
-                  alt="add button"
                 />
-              </LabelWrapper>
-            </div>
-
-            <div className="flex gap-5">
-              <LabelWrapper labelText="Beslutsbenämning #1">
+              </td>
+              <td>
+                {/* antal */}
                 <input
-                  {...register(`ProductVariant.${index}.decisionDesignation1`)}
+                  type="text"
+                  placeholder="1"
                   className="inputField"
-                  placeholder="Beslutsbenämning #1"
+                  value={getValues?.(`ProductVariant.${index}.amount`) || ""}
+                  defaultValue={1}
                 />
-              </LabelWrapper>
-              <LabelWrapper labelText="Beslutsbenämning #2">
-                <Image
-                  src="/Button-Add.svg"
-                  height={36}
-                  width={36}
-                  alt="add button"
-                />
-              </LabelWrapper>
-            </div>
+              </td>
+              <td>
+                <select className="inputField">
+                  <option value="">Inventerad</option>
+                </select>
+              </td>
+              <td>
+                <select className="inputField">
+                  <option value="">Ej publicerad</option>
+                </select>
+              </td>
+              <td className="paragraph text-left"></td>
+              <td className="paragraph text-left"></td>
+              <td className="paragraph text-left"></td>
+              <td className="paragraph text-left"></td>
+              <td></td>
+            </tr>
 
-            <div className="flex gap-5">
-              <button
-                className="button-outline !text-textBlack !border-textBlack"
-                onClick={() => toggleDropdown(index)}
-                type="button"
-              >
-                Stäng
-              </button>
-              <button
-                className="button-outline !text-textBlack !border-textBlack"
-                onClick={() => toggleDropdown(index)}
-                type="button"
-              >
-                Spara
-              </button>
-            </div>
+            {/* dropdown part: */}
+            <tr>
+              <td colSpan={10}>
+                <div
+                  className={`flex-col gap-4 mb-4 ${
+                    dropdownIsVisible[index] ? "flex" : "hidden"
+                  }`}
+                >
+                  <h1 className="header1-bold">
+                    Editera antal, status och platsinformation
+                  </h1>
 
-            <div className="w-full h-[1px] bg-lightGray my-4"></div>
-          </div>
+                  <LabelWrapper labelText="Antal (st)">
+                    <input
+                      {...register(`ProductVariant.${index}.amount`, {
+                        valueAsNumber: true,
+                      })}
+                      className="inputField"
+                    />
+                  </LabelWrapper>
 
-          <button type="button" onClick={() => remove(index)}>
-            Delete
-          </button>
-        </div>
-      ))}
+                  <div className="grid grid-cols-2 gap-6">
+                    <LabelWrapper labelText="Status">
+                      <select
+                        {...register(`ProductVariant.${index}.status`)}
+                        className="inputField"
+                      >
+                        <option value="Inventerad">
+                          Inventerad - i lager/förråd
+                        </option>
+                      </select>
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Marknadsplatsen">
+                      <select
+                        {...register(`ProductVariant.${index}.marketPlace`)}
+                        className="inputField"
+                      >
+                        <option value="Ej publicerad">Ej publicerad</option>
+                      </select>
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Datum tillgänglig">
+                      <input
+                        {...register(`ProductVariant.${index}.dateAvailable`, {
+                          valueAsDate: true,
+                        })}
+                        className="inputField"
+                        type="date"
+                        defaultValue={getTodaysDate()}
+                      />
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Datum första möjliga leverans">
+                      <input
+                        {...register(
+                          `ProductVariant.${index}.earliestDeliveryDate`,
+                          {
+                            valueAsDate: true,
+                          }
+                        )}
+                        className="inputField"
+                        type="date"
+                        defaultValue={getTodaysDate()}
+                      />
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Demonterbarhet">
+                      <select
+                        {...register(`ProductVariant.${index}.demountability`)}
+                        className="inputField"
+                      >
+                        <option value="Enkel att demontera">
+                          Enkel att demontera/demontering krävs ej
+                        </option>
+                      </select>
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Åtkomlighet">
+                      <select
+                        {...register(`ProductVariant.${index}.accessability`)}
+                        className="inputField"
+                      >
+                        <option value="Lätt åtkomligt">Lätt åtkomligt</option>
+                      </select>
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Demonterbarhet kommentar">
+                      <input
+                        {...register(
+                          `ProductVariant.${index}.demountabilityComment`
+                        )}
+                        className="inputField"
+                        placeholder="Demonterbarhet kommentar"
+                      />
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Åtkomlighet kommentar">
+                      <input
+                        {...register(
+                          `ProductVariant.${index}.accessabilityComment`
+                        )}
+                        className="inputField"
+                        placeholder="Åtkomlighet kommentar"
+                      />
+                    </LabelWrapper>
+                  </div>
 
-      <div className="flex gap-6 justify-between">
-        <div>
+                  <div className="flex gap-5">
+                    <LabelWrapper labelText="Placering #1">
+                      <input
+                        {...register(`ProductVariant.${index}.location1`)}
+                        className="inputField"
+                        placeholder="Placering #1"
+                      />
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Placering #2">
+                      <Image
+                        src="/Button-Add.svg"
+                        height={36}
+                        width={36}
+                        alt="add button"
+                      />
+                    </LabelWrapper>
+                  </div>
+
+                  <div className="flex gap-5">
+                    <LabelWrapper labelText="Beslutsbenämning #1">
+                      <input
+                        {...register(
+                          `ProductVariant.${index}.decisionDesignation1`
+                        )}
+                        className="inputField"
+                        placeholder="Beslutsbenämning #1"
+                      />
+                    </LabelWrapper>
+                    <LabelWrapper labelText="Beslutsbenämning #2">
+                      <Image
+                        src="/Button-Add.svg"
+                        height={36}
+                        width={36}
+                        alt="add button"
+                      />
+                    </LabelWrapper>
+                  </div>
+
+                  <div className="flex gap-5">
+                    <button
+                      className="button-outline !text-textBlack !border-textBlack"
+                      onClick={() => toggleDropdown(index)}
+                      type="button"
+                    >
+                      Stäng
+                    </button>
+                    <button
+                      className="button-outline !text-textBlack !border-textBlack"
+                      onClick={() => toggleDropdown(index)}
+                      type="button"
+                    >
+                      Spara
+                    </button>
+                  </div>
+
+                  <div className="w-full h-[1px] bg-lightGray my-4"></div>
+                </div>
+              </td>
+            </tr>
+            {/* end of dropdown part */}
+          </tbody>
+        ))}
+      </table>
+
+      {/* Page navigation + submit: */}
+      <div className="flex gap-6 w-full justify-between mt-8">
+        <div className="flex gap-6">
           <button
             onClick={() => setViewState("GeneralInformation")}
             className="button-outline"
