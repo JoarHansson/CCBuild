@@ -50,6 +50,7 @@ export default function LocationStatusAmount({
     return today;
   };
 
+  // Toggle dropdown logic:
   const [dropdownIsVisible, setDropdownIsVisible] = useState<{
     [key: number]: boolean;
   }>({});
@@ -60,6 +61,27 @@ export default function LocationStatusAmount({
       [index]: !prevState[index],
     }));
   };
+
+  // Remove variants logic:
+  const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
+
+  const handleClickRemoveVariant = () => {
+    if (selectedVariants.length === 0) {
+      return;
+    } else {
+      remove(selectedVariants);
+      setSelectedVariants([]);
+    }
+  };
+
+  const handleToggleCheckbox = (event: any, index: number) => {
+    if (event.target.checked) {
+      setSelectedVariants((prevState) => [...prevState, index]);
+    } else {
+      setSelectedVariants((prevState) => prevState.filter((i) => i !== index));
+    }
+  };
+
   return (
     <>
       <div className="flex flex-row justify-between mb-8">
@@ -75,6 +97,7 @@ export default function LocationStatusAmount({
 
           <div className="flex gap-2">
             <button
+              onClick={handleClickRemoveVariant}
               type="button"
               className="button-outline !bg-lightGray !text-darkGray !border-lightGray"
             >
@@ -121,10 +144,13 @@ export default function LocationStatusAmount({
         </thead>
 
         {fields.map((item, index) => (
-          <tbody>
+          <tbody key={item.id}>
             <tr>
               <td>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onChange={(event) => handleToggleCheckbox(event, index)}
+                />
               </td>
               <td
                 onClick={() => toggleDropdown(index)}
@@ -325,14 +351,11 @@ export default function LocationStatusAmount({
               </td>
             </tr>
             {/* end of dropdown part */}
-
-            {/* <button type="button" onClick={() => remove(index)}>
-              Delete
-            </button> */}
           </tbody>
         ))}
       </table>
 
+      {/* Page navigation + submit: */}
       <div className="flex gap-6 w-full justify-between mt-8">
         <div className="flex gap-6">
           <button
