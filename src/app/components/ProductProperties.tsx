@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FormPageProps } from "@/utils/types";
 import buttonAdd from "/public/Button-Add.svg";
@@ -9,6 +9,7 @@ import checkmarkGreen from "/public/Checkmark-green.svg";
 export default function ProductProperties({
   register,
   setViewState,
+  getValues,
 }: FormPageProps) {
   const [file, setFile] = useState("");
   const hiddenFileInput = useRef<HTMLInputElement>(null);
@@ -25,23 +26,191 @@ export default function ProductProperties({
     hiddenFileInput.current?.click();
   };
 
+  // Get the selected category:
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  useEffect(() => {
+    if (getValues) {
+      const category = getValues("category");
+      setSelectedCategory(category);
+    }
+  }, []);
+
   return (
     <>
       <section className="flex flex-col gap-8">
         {/* Egenskaper: */}
         <div className="flex flex-col gap-4">
           <h1 className="header1-bold">Egenskaper</h1>
-          <p className="paragraph">
-            Det finns inga specifika egenskaper för vald produkttyp
-          </p>
+
+          <div className="flex gap-4">
+            {/* hinge */}
+            {selectedCategory !== "Golv" && (
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="hinge" className="paragraph-bold">
+                  Hängning
+                </label>
+                <select {...register("hinge")} className="inputField">
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+            )}
+
+            {/* noiseReduction */}
+            <div className="flex flex-col gap-2 w-[170px]">
+              <label htmlFor="noiseReduction" className="paragraph-bold">
+                Ljudreduktion (dB)
+              </label>
+              <select {...register("noiseReduction")} className="inputField">
+                <option value="Ej angivet" selected={true}>
+                  Ej angivet
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            {/* securityGrade */}
+            {selectedCategory !== "Golv" && (
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="securityGrade" className="paragraph-bold">
+                  Inbrottsskydd
+                </label>
+                <select {...register("securityGrade")} className="inputField">
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+            )}
+
+            {/* fireGrade */}
+            <div className="flex flex-col gap-2 w-[170px]">
+              <label htmlFor="fireGrade" className="paragraph-bold">
+                Brandskydd
+              </label>
+              <select {...register("fireGrade")} className="inputField">
+                <option value="Ej angivet" selected={true}>
+                  Ej angivet
+                </option>
+              </select>
+            </div>
+          </div>
+
+          {/* glass: */}
+          {selectedCategory !== "Golv" && (
+            <div className="flex gap-4">
+              {/* glassModel */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="glassModel" className="paragraph-bold">
+                  Glasmodell
+                </label>
+                <select {...register("glassModel")} className="inputField">
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+
+              {/* glassType */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="glassType" className="paragraph-bold">
+                  Glastyp
+                </label>
+                <select {...register("glassType")} className="inputField">
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+
+              {/* glassThickness */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="glassThickness" className="paragraph-bold">
+                  Glastjocklek (mm)
+                </label>
+                <select {...register("glassThickness")} className="inputField">
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          {selectedCategory !== "Golv" && (
+            <div className="flex gap-4">
+              {/* moduleMeasurements */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="moduleMeasurements" className="paragraph-bold">
+                  Modulmått
+                </label>
+                <select
+                  {...register("moduleMeasurements")}
+                  className="inputField"
+                >
+                  <option value="Ej angivet" selected={true}>
+                    Ej angivet
+                  </option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-4">
+            {/* climate */}
+            <div className="flex flex-col gap-2 w-[170px]">
+              <label htmlFor="climate" className="paragraph-bold">
+                Omgivning/klimat
+              </label>
+              <select {...register("climate")} className="inputField">
+                <option value="Ej angivet" selected={true}>
+                  Ej angivet
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            {/* color */}
+            <div className="flex flex-col gap-2 w-[170px]">
+              <label htmlFor="color" className="paragraph-bold">
+                Färg
+              </label>
+              <input
+                {...register("color")}
+                className="inputField"
+                placeholder="Färg"
+              />
+            </div>
+          </div>
+
+          {selectedCategory !== "Golv" && (
+            <div className="flex gap-4">
+              {/* frameThickness */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="frameThickness" className="paragraph-bold">
+                  Karmdjup (mm)
+                </label>
+                <input
+                  {...register("frameThickness")}
+                  className="inputField"
+                  placeholder="Karmdjup (mm)"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Form: */}
         <div className="flex flex-col gap-4">
           <h1 className="header1-bold">Form</h1>
 
-          <div className="flex w-full justify-between gap-4">
-            <div className="flex flex-col gap-2 w-1/2">
+          {/* Material och finish */}
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-2 w-[300px]">
               <label htmlFor="material" className="paragraph-bold">
                 Material
               </label>
@@ -52,7 +221,7 @@ export default function ProductProperties({
               />
             </div>
 
-            <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex flex-col gap-2  w-[300px]">
               <label htmlFor="finish" className="paragraph-bold">
                 Färg / Finish
               </label>
@@ -63,8 +232,10 @@ export default function ProductProperties({
               />
             </div>
           </div>
+          {/* end - Material och finish */}
 
-          <div className="flex w-full gap-4">
+          {/* Unit of measurement + dimensions */}
+          <div className="flex gap-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="unitOfMeasurement" className="paragraph-bold">
                 Enhet mått
@@ -151,9 +322,11 @@ export default function ProductProperties({
               />
             </div>
           </div>
+          {/* end - Unit of measurement + dimensions */}
 
-          <div className="flex w-full justify-between gap-4">
-            <div className="flex flex-col gap-2 w-1/2">
+          {/* Unit of weight + weight */}
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-2 w-[300px]">
               <label htmlFor="unitOfWeight" className="paragraph-bold">
                 Enhet vikt
               </label>
@@ -164,7 +337,7 @@ export default function ProductProperties({
               </select>
             </div>
 
-            <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex flex-col gap-2 w-[300px]">
               <label htmlFor="weight" className="paragraph-bold">
                 Vikt / st
               </label>
@@ -176,14 +349,15 @@ export default function ProductProperties({
               />
             </div>
           </div>
+          {/* end - Unit of weight + weight */}
         </div>
 
         {/* Produktinformation: */}
         <div className="flex flex-col gap-4">
           <h1 className="header1-bold">Produktinformation</h1>
 
-          <div className="flex w-full justify-between gap-4">
-            <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex w-full  gap-4">
+            <div className="flex flex-col gap-2 w-[400px]">
               <label htmlFor="GTIN" className="paragraph-bold">
                 GTIN
               </label>
@@ -194,7 +368,7 @@ export default function ProductProperties({
               />
             </div>
 
-            <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex flex-col gap-2 w-[400px]">
               <label htmlFor="eNR" className="paragraph-bold">
                 E - NR
               </label>
@@ -206,8 +380,8 @@ export default function ProductProperties({
             </div>
           </div>
 
-          <div className="flex w-full justify-between gap-4">
-            <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex w-full gap-4">
+            <div className="flex flex-col gap-2 w-[400px]">
               <label htmlFor="RSK" className="paragraph-bold">
                 RSK
               </label>
@@ -218,7 +392,7 @@ export default function ProductProperties({
               />
             </div>
 
-            <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex flex-col gap-2 w-[400px]">
               <label htmlFor="Bk04" className="paragraph-bold">
                 Bk04
               </label>
@@ -230,8 +404,8 @@ export default function ProductProperties({
             </div>
           </div>
 
-          <div className="flex w-full justify-between gap-4">
-            <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex w-full gap-4">
+            <div className="flex flex-col gap-2 w-[400px]">
               <label htmlFor="BSAB" className="paragraph-bold">
                 BSAB
               </label>
@@ -242,7 +416,7 @@ export default function ProductProperties({
               />
             </div>
 
-            <div className="flex flex-col gap-2 w-1/2 opacity-0">
+            <div className="flex flex-col gap-2 w-[400px] opacity-0">
               <label className="paragraph-bold">ghost field</label>
               <input
                 className="inputField"
@@ -252,6 +426,7 @@ export default function ProductProperties({
             </div>
           </div>
         </div>
+        {/* end - Produktinformation: */}
 
         {/* files: */}
         <div className="flex gap-8 items-center">
@@ -272,6 +447,7 @@ export default function ProductProperties({
             <p className="paragraph">{file}</p>
           </div>
         ) : null}
+        {/* end - files: */}
 
         {/* Page navigation + submit: */}
         <div className="flex gap-6 w-full justify-between">

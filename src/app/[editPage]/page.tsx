@@ -11,15 +11,15 @@ import Link from "next/link";
 
 export default function EditPage() {
   const [product, setProduct] = useState<Product | null>();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const pathname = parseInt(usePathname().slice(1));
-  console.log(pathname);
 
+  // set product logic:
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const productData = await getProduct(pathname);
         setProduct(productData);
-        console.log(productData);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -28,6 +28,15 @@ export default function EditPage() {
     fetchProduct();
   }, []);
 
+  // set category logic:
+  useEffect(() => {
+    if (product !== null && product !== undefined) {
+      setSelectedCategory(product.category);
+    }
+    console.log(selectedCategory);
+  }, [product]);
+
+  // dropdown visibility logic:
   const [dropdownIsVisible, setDropdownIsVisible] = useState<{
     [key: number]: boolean;
   }>({});
@@ -39,6 +48,7 @@ export default function EditPage() {
     }));
   };
 
+  // scroll-to-top logic:
   const isBrowser = () => typeof window !== "undefined";
 
   function scrollToTop() {
@@ -325,9 +335,9 @@ export default function EditPage() {
             </div>
           </div>
           {/* --- Product descripton */}
-          {/* Buttons --- */}
-          {/* --- Buttons */}
         </div>
+
+        {/* location status amount: */}
         <div className="flex flex-row justify-between pb-9">
           <h1 className="header1-bold">Plats / Status / Antal</h1>
           <div className="flex gap-4">
@@ -367,247 +377,413 @@ export default function EditPage() {
           </div>
         </div>
 
-        {product?.ProductVariant.map((item, index) => (
-          <div key={item.id}>
-            <table>
-              <tbody>
-                <tr>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th className="paragraph-bold text-left">Ändra</th>
-                  <th className="paragraph-bold text-left">Antal (st)</th>
-                  <th className="paragraph-bold col-span-2 text-left">
-                    Status
-                  </th>
-                  <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
-                  <th className="paragraph-bold text-left">Placering #1</th>
-                  <th className="paragraph-bold text-left">Placering #2</th>
-                  <th className="paragraph-bold text-left">Placering #3</th>
-                  <th className="paragraph-bold text-left">Placering #4</th>
-                  <th className="paragraph-bold text-left">QR-kod</th>
-                </tr>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th className="paragraph-bold text-left">Ändra</th>
+              <th className="paragraph-bold text-left">Antal (st)</th>
+              <th className="paragraph-bold col-span-2 text-left">Status</th>
+              <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
+              <th className="paragraph-bold text-left">Placering #1</th>
+              <th className="paragraph-bold text-left">Placering #2</th>
+              <th className="paragraph-bold text-left">Placering #3</th>
+              <th className="paragraph-bold text-left">Placering #4</th>
+              <th className="paragraph-bold text-left">QR-kod</th>
+            </tr>
+          </thead>
 
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td
-                    onClick={() => toggleDropdown(index)}
-                    className="cursor-pointer"
-                  >
-                    <Image
-                      src="/Button-Edit.svg"
-                      alt="edit icon"
-                      height={36}
-                      width={36}
-                    />
-                  </td>
-                  <td>
-                    {/* antal */}
-                    <input
-                      type="text"
-                      placeholder="1"
-                      className="inputField"
-                      value={product.ProductVariant[index].amount || 1}
-                    />
-                  </td>
-                  <td>
-                    <select className="inputField">
-                      <option value="">Inventerad</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select className="inputField">
-                      <option value="">Ej publicerad</option>
-                    </select>
-                  </td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* dropdown part: */}
-            <div
-              className={` flex-col gap-4 mb-4 ${
-                dropdownIsVisible[index] ? "flex" : "hidden"
-              }`}
-            >
-              <h1 className="header1-bold">
-                Editera antal, status och platsinformation
-              </h1>
-
-              <LabelWrapper labelText="Antal (st)">
-                <input
-                  className="inputField"
-                  value={product.ProductVariant[index].amount || 1}
-                />
-              </LabelWrapper>
-
-              <div className="grid grid-cols-2 gap-6">
-                <LabelWrapper labelText="Status">
-                  <select
-                    className="inputField"
-                    value={product.ProductVariant[index].status || "Inventerad"}
-                  >
-                    <option value="Inventerad">
-                      Inventerad - i lager/förråd
-                    </option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Marknadsplatsen">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].marketPlace ||
-                      "Ej publicerad"
-                    }
-                  >
-                    <option value="Ej publicerad">Ej publicerad</option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Datum tillgänglig">
-                  <input
-                    className="inputField"
-                    type="date"
-                    value={"2024-09-27"}
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Datum första möjliga leverans">
-                  <input
-                    className="inputField"
-                    type="date"
-                    value={"2024-09-27"}
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Demonterbarhet">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].demountability ||
-                      "Enkel att demontera"
-                    }
-                  >
-                    <option value="Enkel att demontera">
-                      Enkel att demontera/demontering krävs ej
-                    </option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Åtkomlighet">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].accessability ||
-                      "Lätt åtkomligt"
-                    }
-                  >
-                    <option value="Lätt åtkomligt">Lätt åtkomligt</option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Demonterbarhet kommentar">
-                  <input
-                    className="inputField"
-                    placeholder="Demonterbarhet kommentar"
-                    value={
-                      product.ProductVariant[index].demountabilityComment ||
-                      "Demonterbarhet kommentar"
-                    }
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Åtkomlighet kommentar">
-                  <input
-                    className="inputField"
-                    placeholder="Åtkomlighet kommentar"
-                    value={
-                      product.ProductVariant[index].accessabilityComment ||
-                      "Åtkomlighet kommentar"
-                    }
-                  />
-                </LabelWrapper>
-              </div>
-
-              <div className="flex gap-5">
-                <LabelWrapper labelText="Placering #1">
-                  <input
-                    className="inputField"
-                    placeholder="Placering #1"
-                    value={
-                      product.ProductVariant[index].location1 || "Placering 1"
-                    }
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Placering #2">
+          {product?.ProductVariant.map((item, index) => (
+            <tbody key={item.id}>
+              <tr>
+                <td>
+                  <input type="checkbox" />
+                </td>
+                <td
+                  onClick={() => toggleDropdown(index)}
+                  className="cursor-pointer"
+                >
                   <Image
-                    src="/Button-Add.svg"
+                    src="/Button-Edit.svg"
+                    alt="edit icon"
                     height={36}
                     width={36}
-                    alt="add button"
                   />
-                </LabelWrapper>
-              </div>
-
-              <div className="flex gap-5">
-                <LabelWrapper labelText="Beslutsbenämning #1">
+                </td>
+                <td>
+                  {/* antal */}
                   <input
+                    type="text"
+                    placeholder="1"
                     className="inputField"
-                    placeholder="Beslutsbenämning #1"
-                    value={
-                      product.ProductVariant[index].decisionDesignation1 ||
-                      "Beslutsbenämning 1"
-                    }
+                    value={product.ProductVariant[index].amount || 1}
                   />
-                </LabelWrapper>
-                <LabelWrapper labelText="Beslutsbenämning #2">
-                  <Image
-                    src="/Button-Add.svg"
-                    height={36}
-                    width={36}
-                    alt="add button"
-                  />
-                </LabelWrapper>
-              </div>
+                </td>
+                <td>
+                  <select className="inputField">
+                    <option value="">Inventerad</option>
+                  </select>
+                </td>
+                <td>
+                  <select className="inputField">
+                    <option value="">Ej publicerad</option>
+                  </select>
+                </td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td></td>
+              </tr>
 
-              <div className="flex gap-5">
-                <button
-                  className="button-outline !text-textBlack !border-textBlack"
-                  onClick={() => toggleDropdown(index)}
-                  type="button"
-                >
-                  Stäng
-                </button>
-                <button
-                  className="button-outline !text-textBlack !border-textBlack"
-                  onClick={() => toggleDropdown(index)}
-                  type="button"
-                >
-                  Spara
-                </button>
-              </div>
+              {/* dropdown part: */}
+              <tr>
+                <td colSpan={10}>
+                  <div
+                    className={` flex-col gap-4 mb-4 ${
+                      dropdownIsVisible[index] ? "flex" : "hidden"
+                    }`}
+                  >
+                    <h1 className="header1-bold">
+                      Editera antal, status och platsinformation
+                    </h1>
 
-              <div className="w-full h-[1px] bg-lightGray my-4"></div>
-            </div>
-          </div>
-        ))}
+                    <LabelWrapper labelText="Antal (st)">
+                      <input
+                        className="inputField"
+                        value={product.ProductVariant[index].amount || 1}
+                      />
+                    </LabelWrapper>
+
+                    <div className="grid grid-cols-2 gap-6">
+                      <LabelWrapper labelText="Status">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].status || "Inventerad"
+                          }
+                        >
+                          <option value="Inventerad">
+                            Inventerad - i lager/förråd
+                          </option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Marknadsplatsen">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].marketPlace ||
+                            "Ej publicerad"
+                          }
+                        >
+                          <option value="Ej publicerad">Ej publicerad</option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Datum tillgänglig">
+                        <input
+                          className="inputField"
+                          type="date"
+                          value={"2024-09-27"}
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Datum första möjliga leverans">
+                        <input
+                          className="inputField"
+                          type="date"
+                          value={"2024-09-27"}
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Demonterbarhet">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].demountability ||
+                            "Enkel att demontera"
+                          }
+                        >
+                          <option value="Enkel att demontera">
+                            Enkel att demontera/demontering krävs ej
+                          </option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Åtkomlighet">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].accessability ||
+                            "Lätt åtkomligt"
+                          }
+                        >
+                          <option value="Lätt åtkomligt">Lätt åtkomligt</option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Demonterbarhet kommentar">
+                        <input
+                          className="inputField"
+                          placeholder="Demonterbarhet kommentar"
+                          value={
+                            product.ProductVariant[index]
+                              .demountabilityComment ||
+                            "Demonterbarhet kommentar"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Åtkomlighet kommentar">
+                        <input
+                          className="inputField"
+                          placeholder="Åtkomlighet kommentar"
+                          value={
+                            product.ProductVariant[index]
+                              .accessabilityComment || "Åtkomlighet kommentar"
+                          }
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <LabelWrapper labelText="Placering #1">
+                        <input
+                          className="inputField"
+                          placeholder="Placering #1"
+                          value={
+                            product.ProductVariant[index].location1 ||
+                            "Placering 1"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Placering #2">
+                        <Image
+                          src="/Button-Add.svg"
+                          height={36}
+                          width={36}
+                          alt="add button"
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <LabelWrapper labelText="Beslutsbenämning #1">
+                        <input
+                          className="inputField"
+                          placeholder="Beslutsbenämning #1"
+                          value={
+                            product.ProductVariant[index]
+                              .decisionDesignation1 || "Beslutsbenämning 1"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Beslutsbenämning #2">
+                        <Image
+                          src="/Button-Add.svg"
+                          height={36}
+                          width={36}
+                          alt="add button"
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <button
+                        className="button-outline !text-textBlack !border-textBlack"
+                        onClick={() => toggleDropdown(index)}
+                        type="button"
+                      >
+                        Stäng
+                      </button>
+                      <button
+                        className="button-outline !text-textBlack !border-textBlack"
+                        onClick={() => toggleDropdown(index)}
+                        type="button"
+                      >
+                        Spara
+                      </button>
+                    </div>
+
+                    <div className="w-full h-[1px] bg-lightGray my-4"></div>
+                  </div>
+                </td>
+              </tr>
+              {/* end of dropdown part */}
+            </tbody>
+          ))}
+        </table>
+        {/* end - location status amount: */}
 
         <section className="flex flex-col gap-8 pt-10">
           {/* Egenskaper: */}
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Egenskaper</h1>
-            <p className="paragraph">
-              Det finns inga specifika egenskaper för vald produkttyp
-            </p>
+
+            <div className="flex gap-4">
+              {/* hinge */}
+              {selectedCategory !== "Golv" && (
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="hinge" className="paragraph-bold">
+                    Hängning
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.hinge}
+                    </option>
+                  </select>
+                </div>
+              )}
+
+              {/* noiseReduction */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="noiseReduction" className="paragraph-bold">
+                  Ljudreduktion (dB)
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.noiseReduction}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {/* securityGrade */}
+              {selectedCategory !== "Golv" && (
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="securityGrade" className="paragraph-bold">
+                    Inbrottsskydd
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.securityGrade}
+                    </option>
+                  </select>
+                </div>
+              )}
+
+              {/* fireGrade */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="fireGrade" className="paragraph-bold">
+                  Brandskydd
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.fireGrade}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            {/* glass: */}
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* glassModel */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassModel" className="paragraph-bold">
+                    Glasmodell
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassModel}
+                    </option>
+                  </select>
+                </div>
+
+                {/* glassType */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassType" className="paragraph-bold">
+                    Glastyp
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassType}
+                    </option>
+                  </select>
+                </div>
+
+                {/* glassThickness */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="glassThickness" className="paragraph-bold">
+                    Glastjocklek (mm)
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.glassThickness}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* moduleMeasurements */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label
+                    htmlFor="moduleMeasurements"
+                    className="paragraph-bold"
+                  >
+                    Modulmått
+                  </label>
+                  <select className="inputField">
+                    <option value="" selected={true}>
+                      {product?.moduleMeasurements}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-4">
+              {/* climate */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="climate" className="paragraph-bold">
+                  Omgivning/klimat
+                </label>
+                <select className="inputField">
+                  <option value="" selected={true}>
+                    {product?.climate}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {/* color */}
+              <div className="flex flex-col gap-2 w-[170px]">
+                <label htmlFor="color" className="paragraph-bold">
+                  Färg
+                </label>
+                <input
+                  className="inputField"
+                  placeholder="Färg"
+                  value={product?.color || "Färg"}
+                />
+              </div>
+            </div>
+
+            {selectedCategory !== "Golv" && (
+              <div className="flex gap-4">
+                {/* frameThickness */}
+                <div className="flex flex-col gap-2 w-[170px]">
+                  <label htmlFor="frameThickness" className="paragraph-bold">
+                    Karmdjup (mm)
+                  </label>
+                  <input
+                    value={product?.frameThickness || "Karmdjup (mm)"}
+                    className="inputField"
+                    placeholder="Karmdjup (mm)"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Form: */}
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Form</h1>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            {/* Material och finish */}
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="material" className="paragraph-bold">
                   Material
                 </label>
@@ -618,7 +794,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="finish" className="paragraph-bold">
                   Färg / Finish
                 </label>
@@ -629,8 +805,10 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Material och finish */}
 
-            <div className="flex w-full gap-4">
+            {/* Unit of measurement + dimensions */}
+            <div className="flex  gap-4">
               <div className="flex flex-col gap-2">
                 <label htmlFor="unitOfMeasurement" className="paragraph-bold">
                   Enhet mått
@@ -713,9 +891,11 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Unit of measurement + dimensions */}
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            {/* Unit of weight + weight */}
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="unitOfWeight" className="paragraph-bold">
                   Enhet vikt
                 </label>
@@ -726,7 +906,7 @@ export default function EditPage() {
                 </select>
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[300px]">
                 <label htmlFor="weight" className="paragraph-bold">
                   Vikt / st
                 </label>
@@ -738,14 +918,15 @@ export default function EditPage() {
                 />
               </div>
             </div>
+            {/* end - Unit of weight + weight */}
           </div>
 
           {/* Produktinformation: */}
           <div className="flex flex-col gap-4">
             <h1 className="header1-bold">Produktinformation</h1>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="GTIN" className="paragraph-bold">
                   GTIN
                 </label>
@@ -756,7 +937,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="eNR" className="paragraph-bold">
                   E - NR
                 </label>
@@ -768,8 +949,8 @@ export default function EditPage() {
               </div>
             </div>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="RSK" className="paragraph-bold">
                   RSK
                 </label>
@@ -780,7 +961,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="Bk04" className="paragraph-bold">
                   Bk04
                 </label>
@@ -792,8 +973,8 @@ export default function EditPage() {
               </div>
             </div>
 
-            <div className="flex w-full justify-between gap-4">
-              <div className="flex flex-col gap-2 w-1/2">
+            <div className="flex w-full  gap-4">
+              <div className="flex flex-col gap-2 w-[400px]">
                 <label htmlFor="BSAB" className="paragraph-bold">
                   BSAB
                 </label>
@@ -804,7 +985,7 @@ export default function EditPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2 opacity-0">
+              <div className="flex flex-col gap-2 w-[400px] opacity-0">
                 <label className="paragraph-bold">ghost field</label>
                 <input
                   className="inputField"
@@ -814,6 +995,7 @@ export default function EditPage() {
               </div>
             </div>
           </div>
+          {/* end - Produktinformation: */}
 
           {/* files: */}
           <div className="flex gap-8 items-center pb-10">
