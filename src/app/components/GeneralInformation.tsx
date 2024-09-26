@@ -1,61 +1,26 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import {
-  getCategories,
-  getFirstSubCat,
-  getProjects,
-  getSecondSubCat,
-} from "@/utils/queries";
-
-import {
-  Categories,
-  FirstSubCategories,
-  SecondSubCategories,
-  FormPageProps,
-  Project,
-} from "@/utils/types";
+import { FormPageProps } from "@/utils/types";
 
 export default function GeneralInformation({
   register,
   setViewState,
   getValues,
+  categories,
+  firstSubCategories,
+  secondSubCategories,
+  projects,
 }: FormPageProps) {
-  const [categories, setCategories] = useState<Categories[]>();
-  const [firstSubCategories, setFirstSubCategories] =
-    useState<FirstSubCategories[]>();
-  const [secondSubCategories, setSecondSubCategories] =
-    useState<SecondSubCategories[]>();
-  const [projects, setProjects] = useState<Project[]>();
-
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedFirstSubCategory, setSelectedFirstSubCategory] = useState("");
   const [selectedSecondSubCategory, setSelectedSecondSubCategory] =
     useState("");
   const [aestheticStars, setAestheticStars] = useState(0);
   const [functionalStars, setFunctionalStars] = useState(0);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoryData = await getCategories();
-        const firstSubCategoryData = await getFirstSubCat();
-        const secondSubCategoryData = await getSecondSubCat();
-        const projectsData = await getProjects();
-        setCategories(categoryData);
-        setFirstSubCategories(firstSubCategoryData);
-        setSecondSubCategories(secondSubCategoryData);
-        setProjects(projectsData);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   console.log(selectedSecondSubCategory);
 
