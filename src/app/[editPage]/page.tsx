@@ -335,9 +335,9 @@ export default function EditPage() {
             </div>
           </div>
           {/* --- Product descripton */}
-          {/* Buttons --- */}
-          {/* --- Buttons */}
         </div>
+
+        {/* location status amount: */}
         <div className="flex flex-row justify-between pb-9">
           <h1 className="header1-bold">Plats / Status / Antal</h1>
           <div className="flex gap-4">
@@ -377,231 +377,239 @@ export default function EditPage() {
           </div>
         </div>
 
-        {product?.ProductVariant.map((item, index) => (
-          <div key={item.id}>
-            <table>
-              <tbody>
-                <tr>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th className="paragraph-bold text-left">Ändra</th>
-                  <th className="paragraph-bold text-left">Antal (st)</th>
-                  <th className="paragraph-bold col-span-2 text-left">
-                    Status
-                  </th>
-                  <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
-                  <th className="paragraph-bold text-left">Placering #1</th>
-                  <th className="paragraph-bold text-left">Placering #2</th>
-                  <th className="paragraph-bold text-left">Placering #3</th>
-                  <th className="paragraph-bold text-left">Placering #4</th>
-                  <th className="paragraph-bold text-left">QR-kod</th>
-                </tr>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th className="paragraph-bold text-left">Ändra</th>
+              <th className="paragraph-bold text-left">Antal (st)</th>
+              <th className="paragraph-bold col-span-2 text-left">Status</th>
+              <th className="paragraph-bold col-span-2">Marknadsplatsen</th>
+              <th className="paragraph-bold text-left">Placering #1</th>
+              <th className="paragraph-bold text-left">Placering #2</th>
+              <th className="paragraph-bold text-left">Placering #3</th>
+              <th className="paragraph-bold text-left">Placering #4</th>
+              <th className="paragraph-bold text-left">QR-kod</th>
+            </tr>
+          </thead>
 
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td
-                    onClick={() => toggleDropdown(index)}
-                    className="cursor-pointer"
-                  >
-                    <Image
-                      src="/Button-Edit.svg"
-                      alt="edit icon"
-                      height={36}
-                      width={36}
-                    />
-                  </td>
-                  <td>
-                    {/* antal */}
-                    <input
-                      type="text"
-                      placeholder="1"
-                      className="inputField"
-                      value={product.ProductVariant[index].amount || 1}
-                    />
-                  </td>
-                  <td>
-                    <select className="inputField">
-                      <option value="">Inventerad</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select className="inputField">
-                      <option value="">Ej publicerad</option>
-                    </select>
-                  </td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td className="paragraph text-left"></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* dropdown part: */}
-            <div
-              className={` flex-col gap-4 mb-4 ${
-                dropdownIsVisible[index] ? "flex" : "hidden"
-              }`}
-            >
-              <h1 className="header1-bold">
-                Editera antal, status och platsinformation
-              </h1>
-
-              <LabelWrapper labelText="Antal (st)">
-                <input
-                  className="inputField"
-                  value={product.ProductVariant[index].amount || 1}
-                />
-              </LabelWrapper>
-
-              <div className="grid grid-cols-2 gap-6">
-                <LabelWrapper labelText="Status">
-                  <select
-                    className="inputField"
-                    value={product.ProductVariant[index].status || "Inventerad"}
-                  >
-                    <option value="Inventerad">
-                      Inventerad - i lager/förråd
-                    </option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Marknadsplatsen">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].marketPlace ||
-                      "Ej publicerad"
-                    }
-                  >
-                    <option value="Ej publicerad">Ej publicerad</option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Datum tillgänglig">
-                  <input
-                    className="inputField"
-                    type="date"
-                    value={"2024-09-27"}
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Datum första möjliga leverans">
-                  <input
-                    className="inputField"
-                    type="date"
-                    value={"2024-09-27"}
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Demonterbarhet">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].demountability ||
-                      "Enkel att demontera"
-                    }
-                  >
-                    <option value="Enkel att demontera">
-                      Enkel att demontera/demontering krävs ej
-                    </option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Åtkomlighet">
-                  <select
-                    className="inputField"
-                    value={
-                      product.ProductVariant[index].accessability ||
-                      "Lätt åtkomligt"
-                    }
-                  >
-                    <option value="Lätt åtkomligt">Lätt åtkomligt</option>
-                  </select>
-                </LabelWrapper>
-                <LabelWrapper labelText="Demonterbarhet kommentar">
-                  <input
-                    className="inputField"
-                    placeholder="Demonterbarhet kommentar"
-                    value={
-                      product.ProductVariant[index].demountabilityComment ||
-                      "Demonterbarhet kommentar"
-                    }
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Åtkomlighet kommentar">
-                  <input
-                    className="inputField"
-                    placeholder="Åtkomlighet kommentar"
-                    value={
-                      product.ProductVariant[index].accessabilityComment ||
-                      "Åtkomlighet kommentar"
-                    }
-                  />
-                </LabelWrapper>
-              </div>
-
-              <div className="flex gap-5">
-                <LabelWrapper labelText="Placering #1">
-                  <input
-                    className="inputField"
-                    placeholder="Placering #1"
-                    value={
-                      product.ProductVariant[index].location1 || "Placering 1"
-                    }
-                  />
-                </LabelWrapper>
-                <LabelWrapper labelText="Placering #2">
+          {product?.ProductVariant.map((item, index) => (
+            <tbody key={item.id}>
+              <tr>
+                <td>
+                  <input type="checkbox" />
+                </td>
+                <td
+                  onClick={() => toggleDropdown(index)}
+                  className="cursor-pointer"
+                >
                   <Image
-                    src="/Button-Add.svg"
+                    src="/Button-Edit.svg"
+                    alt="edit icon"
                     height={36}
                     width={36}
-                    alt="add button"
                   />
-                </LabelWrapper>
-              </div>
-
-              <div className="flex gap-5">
-                <LabelWrapper labelText="Beslutsbenämning #1">
+                </td>
+                <td>
+                  {/* antal */}
                   <input
+                    type="text"
+                    placeholder="1"
                     className="inputField"
-                    placeholder="Beslutsbenämning #1"
-                    value={
-                      product.ProductVariant[index].decisionDesignation1 ||
-                      "Beslutsbenämning 1"
-                    }
+                    value={product.ProductVariant[index].amount || 1}
                   />
-                </LabelWrapper>
-                <LabelWrapper labelText="Beslutsbenämning #2">
-                  <Image
-                    src="/Button-Add.svg"
-                    height={36}
-                    width={36}
-                    alt="add button"
-                  />
-                </LabelWrapper>
-              </div>
+                </td>
+                <td>
+                  <select className="inputField">
+                    <option value="">Inventerad</option>
+                  </select>
+                </td>
+                <td>
+                  <select className="inputField">
+                    <option value="">Ej publicerad</option>
+                  </select>
+                </td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td className="paragraph text-left"></td>
+                <td></td>
+              </tr>
 
-              <div className="flex gap-5">
-                <button
-                  className="button-outline !text-textBlack !border-textBlack"
-                  onClick={() => toggleDropdown(index)}
-                  type="button"
-                >
-                  Stäng
-                </button>
-                <button
-                  className="button-outline !text-textBlack !border-textBlack"
-                  onClick={() => toggleDropdown(index)}
-                  type="button"
-                >
-                  Spara
-                </button>
-              </div>
+              {/* dropdown part: */}
+              <tr>
+                <td colSpan={10}>
+                  <div
+                    className={` flex-col gap-4 mb-4 ${
+                      dropdownIsVisible[index] ? "flex" : "hidden"
+                    }`}
+                  >
+                    <h1 className="header1-bold">
+                      Editera antal, status och platsinformation
+                    </h1>
 
-              <div className="w-full h-[1px] bg-lightGray my-4"></div>
-            </div>
-          </div>
-        ))}
+                    <LabelWrapper labelText="Antal (st)">
+                      <input
+                        className="inputField"
+                        value={product.ProductVariant[index].amount || 1}
+                      />
+                    </LabelWrapper>
+
+                    <div className="grid grid-cols-2 gap-6">
+                      <LabelWrapper labelText="Status">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].status || "Inventerad"
+                          }
+                        >
+                          <option value="Inventerad">
+                            Inventerad - i lager/förråd
+                          </option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Marknadsplatsen">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].marketPlace ||
+                            "Ej publicerad"
+                          }
+                        >
+                          <option value="Ej publicerad">Ej publicerad</option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Datum tillgänglig">
+                        <input
+                          className="inputField"
+                          type="date"
+                          value={"2024-09-27"}
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Datum första möjliga leverans">
+                        <input
+                          className="inputField"
+                          type="date"
+                          value={"2024-09-27"}
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Demonterbarhet">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].demountability ||
+                            "Enkel att demontera"
+                          }
+                        >
+                          <option value="Enkel att demontera">
+                            Enkel att demontera/demontering krävs ej
+                          </option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Åtkomlighet">
+                        <select
+                          className="inputField"
+                          value={
+                            product.ProductVariant[index].accessability ||
+                            "Lätt åtkomligt"
+                          }
+                        >
+                          <option value="Lätt åtkomligt">Lätt åtkomligt</option>
+                        </select>
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Demonterbarhet kommentar">
+                        <input
+                          className="inputField"
+                          placeholder="Demonterbarhet kommentar"
+                          value={
+                            product.ProductVariant[index]
+                              .demountabilityComment ||
+                            "Demonterbarhet kommentar"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Åtkomlighet kommentar">
+                        <input
+                          className="inputField"
+                          placeholder="Åtkomlighet kommentar"
+                          value={
+                            product.ProductVariant[index]
+                              .accessabilityComment || "Åtkomlighet kommentar"
+                          }
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <LabelWrapper labelText="Placering #1">
+                        <input
+                          className="inputField"
+                          placeholder="Placering #1"
+                          value={
+                            product.ProductVariant[index].location1 ||
+                            "Placering 1"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Placering #2">
+                        <Image
+                          src="/Button-Add.svg"
+                          height={36}
+                          width={36}
+                          alt="add button"
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <LabelWrapper labelText="Beslutsbenämning #1">
+                        <input
+                          className="inputField"
+                          placeholder="Beslutsbenämning #1"
+                          value={
+                            product.ProductVariant[index]
+                              .decisionDesignation1 || "Beslutsbenämning 1"
+                          }
+                        />
+                      </LabelWrapper>
+                      <LabelWrapper labelText="Beslutsbenämning #2">
+                        <Image
+                          src="/Button-Add.svg"
+                          height={36}
+                          width={36}
+                          alt="add button"
+                        />
+                      </LabelWrapper>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <button
+                        className="button-outline !text-textBlack !border-textBlack"
+                        onClick={() => toggleDropdown(index)}
+                        type="button"
+                      >
+                        Stäng
+                      </button>
+                      <button
+                        className="button-outline !text-textBlack !border-textBlack"
+                        onClick={() => toggleDropdown(index)}
+                        type="button"
+                      >
+                        Spara
+                      </button>
+                    </div>
+
+                    <div className="w-full h-[1px] bg-lightGray my-4"></div>
+                  </div>
+                </td>
+              </tr>
+              {/* end of dropdown part */}
+            </tbody>
+          ))}
+        </table>
+        {/* end - location status amount: */}
 
         <section className="flex flex-col gap-8 pt-10">
           {/* Egenskaper: */}
