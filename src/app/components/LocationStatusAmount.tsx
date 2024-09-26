@@ -62,7 +62,7 @@ export default function LocationStatusAmount({
   };
   return (
     <>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between mb-8">
         <h1 className="header1-bold">Plats / Status / Antal</h1>
         <div className="flex gap-4">
           <button
@@ -333,8 +333,8 @@ export default function LocationStatusAmount({
         ))}
       </table>
 
-      <div className="flex gap-6 justify-between">
-        <div>
+      <div className="flex gap-6 w-full justify-between mt-8">
+        <div className="flex gap-6">
           <button
             onClick={() => setViewState("GeneralInformation")}
             className="button-outline"
