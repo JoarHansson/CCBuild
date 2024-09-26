@@ -50,6 +50,7 @@ export default function AddProduct() {
               <ProductProperties
                 register={register}
                 setViewState={setViewState}
+                getValues={getValues}
               />
             )}
             {viewState === "Marketplace" && (
