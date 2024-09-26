@@ -63,8 +63,11 @@ export default function ProductProperties({
               <label htmlFor="noiseReduction" className="paragraph-bold">
                 Ljudreduktion (dB)
               </label>
-              <select {...register("noiseReduction")} className="inputField">
-                <option value="Ej angivet" selected={true}>
+              <select
+                {...register("noiseReduction", { valueAsNumber: true })}
+                className="inputField"
+              >
+                <option value="0" selected={true}>
                   Ej angivet
                 </option>
               </select>
@@ -131,8 +134,11 @@ export default function ProductProperties({
                 <label htmlFor="glassThickness" className="paragraph-bold">
                   Glastjocklek (mm)
                 </label>
-                <select {...register("glassThickness")} className="inputField">
-                  <option value="Ej angivet" selected={true}>
+                <select
+                  {...register("glassThickness", { valueAsNumber: true })}
+                  className="inputField"
+                >
+                  <option value="0" selected={true}>
                     Ej angivet
                   </option>
                 </select>
@@ -195,9 +201,10 @@ export default function ProductProperties({
                   Karmdjup (mm)
                 </label>
                 <input
-                  {...register("frameThickness")}
+                  {...register("frameThickness", { valueAsNumber: true })}
                   className="inputField"
                   placeholder="Karmdjup (mm)"
+                  type="number"
                 />
               </div>
             </div>
