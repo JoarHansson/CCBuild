@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <>
       <div className="px-4 md:px-[9rem] py-[4rem]">
-        <div className="flex pb-4">
+        <div className="flex pb-4 items-center">
           <h1 className="header1">Översikt</h1>
           <Image
             src="/crumb-arrow.svg"
